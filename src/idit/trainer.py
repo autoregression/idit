@@ -1,7 +1,6 @@
 import typing
 
 import datasets
-import pydantic as pyd
 import pydantic_settings as pyds
 import torch
 import torchvision
@@ -17,7 +16,7 @@ class IDiTTrainerConfig(pyds.BaseSettings):
 
     dataset_path: str = "mnist"
     split: str = "train"
-    feature: str = "image"
+    column: str = "image"
 
     # Model.
 
@@ -28,20 +27,21 @@ class IDiTTrainerConfig(pyds.BaseSettings):
     head_dimension: int = 16
     condition_dimension: int = 64
     frequency_dimension: int = 256
-    layers: int = 1
-    iterations: int = 16
+    layers: int = 2
+    iterations: int = 4
 
     # Optimizer.
 
-    steps: int = 2000
-    batch_size: int = 16
+    steps: int = 10_000
+    batch_size: int = 4
     gradient_accumulation: int = 1
     learning_rate: float = 1e-3
     warmup: int = 100
+    cooldown: int = 500
 
     # Tracker.
 
-    push_path: str = pyd.Field(init=False)
+    checkpoint_path: str = "checkpoint"
 
 
 class IDiTTrainer(typing.NamedTuple):
@@ -62,13 +62,13 @@ class IDiTTrainer(typing.NamedTuple):
         )
 
         dataset = datasets.load_dataset(self.config.dataset_path, split=self.config.split)
-        dataset.set_transform(lambda examples: {self.config.feature: [transform(x) for x in examples[self.config.feature]]})
+        dataset.set_transform(lambda examples: {self.config.column: [transform(x) for x in examples[self.config.column]]})
         data_loader = torch.utils.data.DataLoader(dataset, batch_size=self.config.batch_size, shuffle=True)  #  type: ignore
 
         def create_batches():
             while True:
                 for batch in data_loader:
-                    yield batch[self.config.feature]
+                    yield batch[self.config.column]
 
         batches = create_batches()
 
@@ -90,14 +90,17 @@ class IDiTTrainer(typing.NamedTuple):
 
         # Optimizer.
 
-        def warmup_decay(step: int) -> float:
+        def warmup_stable_decay(step: int) -> float:
             if step < self.config.warmup:
                 return step / self.config.warmup
 
-            return max(0, 1 - (step - self.config.warmup) / (self.config.steps - self.config.warmup))
+            if step < self.config.steps - self.config.cooldown:
+                return 1.0
+
+            return max(0, 1 - (step - (self.config.steps - self.config.cooldown)) / self.config.cooldown)
 
         optimizer = torch.optim.AdamW(model.parameters(), lr=self.config.learning_rate)
-        scheduler = torch.optim.lr_scheduler.LambdaLR(optimizer, warmup_decay)
+        scheduler = torch.optim.lr_scheduler.LambdaLR(optimizer, warmup_stable_decay)
 
         for _ in tqdm.trange(self.config.steps, colour="green", desc="Training"):
             total_loss = 0.0
@@ -113,4 +116,4 @@ class IDiTTrainer(typing.NamedTuple):
             optimizer.step()
             scheduler.step()
 
-        model.push_to_hub(self.config.push_path, private=True)
+        model.save_checkpoint(self.config.checkpoint_path)

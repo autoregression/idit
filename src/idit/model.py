@@ -1,14 +1,11 @@
 import math
 import pathlib
-import tempfile
 import typing
 
 import einops
-import huggingface_hub as hf
 import pydantic as pyd
 import safetensors.torch
 import torch
-import tqdm
 
 
 class IDiTConfig(pyd.BaseModel):
@@ -153,12 +150,12 @@ class IDiT(torch.nn.Module):
 
         self.register_buffer("rope", create_rope_2d(config.head_dimension, config.input_height, config.input_width))
 
-    def predict(self, x: torch.Tensor, *, time: torch.Tensor) -> torch.Tensor:
+    def predict(self, x: torch.Tensor, *, time: torch.Tensor, negative: bool = False) -> torch.Tensor:
         time_condition = self.time_embedding(time)
         x = self.patch_embedding(x)
 
         for iteration in range(self.config.iterations):
-            iteration_condition = self.iteration_embedding(torch.full((x.size(0),), iteration / max(self.config.iterations, 1), device=x.device, dtype=x.dtype))
+            iteration_condition = self.iteration_embedding(torch.full((x.size(0),), iteration / self.config.iterations, device=x.device, dtype=x.dtype))
             condition = time_condition + iteration_condition
 
             for block in self.blocks:
@@ -177,25 +174,20 @@ class IDiT(torch.nn.Module):
 
         return loss
 
+    def save_checkpoint(self, checkpoint_path: str) -> None:
+        checkpoint_path = pathlib.Path(checkpoint_path)
+        checkpoint_path.mkdir(parents=True, exist_ok=True)
+        (checkpoint_path / "config.json").write_text(self.config.model_dump_json(indent=4))
+        safetensors.torch.save_file(self.state_dict(), checkpoint_path / "model.safetensors")
+
     @classmethod
-    def from_pretrained(cls, path: str, revision: str | None = None) -> typing.Self:
-        checkpoint_path = hf.snapshot_download(repo_id=path, revision=revision)
+    def from_checkpoint(cls, checkpoint_path: str) -> typing.Self:
         checkpoint_path = pathlib.Path(checkpoint_path)
         config = IDiTConfig.model_validate_json((checkpoint_path / "config.json").read_text())
         model = cls(config)
         model.load_state_dict(safetensors.torch.load_file(checkpoint_path / "model.safetensors"))
-        tqdm.tqdm._instances.clear()  #  type: ignore
 
         return model
-
-    def push_to_hub(self, path: str, private: bool = True) -> None:
-        hf.create_repo(path, private=private, exist_ok=True)
-
-        with tempfile.TemporaryDirectory() as checkpoint_path:
-            checkpoint_path = pathlib.Path(checkpoint_path)
-            (checkpoint_path / "config.json").write_text(self.config.model_dump_json(indent=4))
-            safetensors.torch.save_file(self.state_dict(), checkpoint_path / "model.safetensors")
-            hf.upload_folder(repo_id=path, folder_path=str(checkpoint_path))
 
 
 # Functions.

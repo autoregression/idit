@@ -1,7 +1,6 @@
 import os
 import typing
 
-import pydantic as pyd
 import pydantic_settings as pyds
 import torch
 import torchvision
@@ -13,9 +12,9 @@ from src.idit.model import IDiT
 class IDiTSamplerConfig(pyds.BaseSettings):
     seed: int = 0
     steps: int = 20
-    batch_size: int = 4
+    batch_size: int = 16
     samples_path: str = "samples"
-    push_path: str = pyd.Field(init=False)
+    checkpoint_path: str = "checkpoint"
 
 
 class IDiTSampler(typing.NamedTuple):
@@ -27,7 +26,7 @@ class IDiTSampler(typing.NamedTuple):
         device = torch.device("cuda" if torch.cuda.is_available() else "mps" if torch.backends.mps.is_available() else "cpu")
         dtype = torch.float32
 
-        model = IDiT.from_pretrained(self.config.push_path).to(device, dtype)
+        model = IDiT.from_checkpoint(self.config.checkpoint_path).to(device, dtype)
 
         noisy = torch.randn(
             self.config.batch_size,

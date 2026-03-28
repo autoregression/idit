@@ -1,0 +1,31 @@
+[project]
+name = "idit"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "datasets>=4.8.4",
+    "dotenv>=0.9.9",
+    "einops>=0.8.2",
+    "huggingface-hub>=1.8.0",
+    "numpy>=2.4.3",
+    "pydantic>=2.12.5",
+    "pydantic-settings>=2.13.1",
+    "pyright>=1.1.408",
+    "ruff>=0.15.8",
+    "safetensors>=0.7.0",
+    "torch>=2.11.0",
+    "torchvision>=0.22.0",
+    "tqdm>=4.67.3",
+]
+
+[project.scripts]
+idit = "idit:main"
+
+[build-system]
+requires = ["uv_build>=0.8.2,<0.9.0"]
+build-backend = "uv_build"
+
+[tool.ruff]
+line-length=160

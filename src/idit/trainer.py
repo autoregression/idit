@@ -1,0 +1,116 @@
+import typing
+
+import datasets
+import pydantic as pyd
+import pydantic_settings as pyds
+import torch
+import torchvision
+import tqdm
+
+from src.idit.model import IDiT, IDiTConfig
+
+
+class IDiTTrainerConfig(pyds.BaseSettings):
+    seed: int = 0
+
+    # Data.
+
+    dataset_path: str = "mnist"
+    split: str = "train"
+    feature: str = "image"
+
+    # Model.
+
+    input_height: int = 16
+    input_width: int = 16
+    input_dimension: int = 1
+    hidden_dimension: int = 64
+    head_dimension: int = 16
+    condition_dimension: int = 64
+    frequency_dimension: int = 256
+    layers: int = 1
+    iterations: int = 16
+
+    # Optimizer.
+
+    steps: int = 2000
+    batch_size: int = 16
+    gradient_accumulation: int = 1
+    learning_rate: float = 1e-3
+    warmup: int = 100
+
+    # Tracker.
+
+    push_path: str = pyd.Field(init=False)
+
+
+class IDiTTrainer(typing.NamedTuple):
+    config: IDiTTrainerConfig
+
+    def train(self) -> None:
+        torch.manual_seed(self.config.seed)
+        device = torch.device("cuda" if torch.cuda.is_available() else "mps" if torch.backends.mps.is_available() else "cpu")
+        dtype = torch.float32
+
+        # Data.
+
+        transform = torchvision.transforms.Compose(
+            [
+                torchvision.transforms.Resize((self.config.input_height, self.config.input_width)),
+                torchvision.transforms.ToTensor(),
+            ]
+        )
+
+        dataset = datasets.load_dataset(self.config.dataset_path, split=self.config.split)
+        dataset.set_transform(lambda examples: {self.config.feature: [transform(x) for x in examples[self.config.feature]]})
+        data_loader = torch.utils.data.DataLoader(dataset, batch_size=self.config.batch_size, shuffle=True)  #  type: ignore
+
+        def create_batches():
+            while True:
+                for batch in data_loader:
+                    yield batch[self.config.feature]
+
+        batches = create_batches()
+
+        # Model.
+
+        model = IDiT(
+            config=IDiTConfig(
+                input_height=self.config.input_height,
+                input_width=self.config.input_width,
+                input_dimension=self.config.input_dimension,
+                hidden_dimension=self.config.hidden_dimension,
+                head_dimension=self.config.head_dimension,
+                condition_dimension=self.config.condition_dimension,
+                frequency_dimension=self.config.frequency_dimension,
+                layers=self.config.layers,
+                iterations=self.config.iterations,
+            )
+        ).to(device, dtype)
+
+        # Optimizer.
+
+        def warmup_decay(step: int) -> float:
+            if step < self.config.warmup:
+                return step / self.config.warmup
+
+            return max(0, 1 - (step - self.config.warmup) / (self.config.steps - self.config.warmup))
+
+        optimizer = torch.optim.AdamW(model.parameters(), lr=self.config.learning_rate)
+        scheduler = torch.optim.lr_scheduler.LambdaLR(optimizer, warmup_decay)
+
+        for _ in tqdm.trange(self.config.steps, colour="green", desc="Training"):
+            total_loss = 0.0
+            optimizer.zero_grad()
+
+            for _ in range(self.config.gradient_accumulation):
+                data = next(batches).to(device, dtype)
+                loss = model(data) / self.config.gradient_accumulation
+                loss.backward()
+                total_loss += loss.item()
+
+            torch.nn.utils.clip_grad_norm_(model.parameters(), 1.0)
+            optimizer.step()
+            scheduler.step()
+
+        model.push_to_hub(self.config.push_path, private=True)

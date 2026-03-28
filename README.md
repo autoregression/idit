@@ -1,6 +1,6 @@
 # IDiT - Iterative Diffusion Transformer
 
-A DiT architecture that leverages iteration to squeeze out more performance per layer. Playing around with very very low compute.
+A DiT architecture that uses each layer more than once. Playing around with very very low compute.
 
 ## Installation
 

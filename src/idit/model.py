@@ -92,10 +92,10 @@ class MLP(torch.nn.Module):  # https://arxiv.org/abs/2212.09748
 
         self.linear_1 = torch.nn.Linear(hidden_dimension, hidden_dimension * 4, bias=False)
         self.linear_2 = zero_init(torch.nn.Linear(hidden_dimension * 4, hidden_dimension, bias=False))
-        # self.ada_norm = AdaRMSNorm(hidden_dimension, condition_dimension)
+        self.ada_norm = AdaRMSNorm(hidden_dimension, condition_dimension)
 
     def forward(self, x: torch.Tensor, condition: torch.Tensor) -> torch.Tensor:
-        # x = self.ada_norm(x, condition)
+        x = self.ada_norm(x, condition)
         x = self.linear_1(x)
         x = self.linear_2(torch.nn.functional.silu(x))
 
@@ -129,12 +129,12 @@ class IDiTBlock(torch.nn.Module):
 
         self.attention = Attention(config.hidden_dimension, config.head_dimension, config.condition_dimension)
         self.mlp = MLP(config.hidden_dimension, config.condition_dimension)
-        self.keel_1 = PostRMSNorm(config.hidden_dimension)
-        self.keel_2 = PostRMSNorm(config.hidden_dimension)
+        self.norm_1 = PostRMSNorm(config.hidden_dimension)
+        self.norm_2 = PostRMSNorm(config.hidden_dimension)
 
     def forward(self, x: torch.Tensor, condition: torch.Tensor, rope: torch.Tensor, layers: int) -> torch.Tensor:
-        x = self.keel_1(x, self.attention(x, condition, rope), layers)
-        x = self.keel_2(x, self.mlp(x, condition), layers)
+        x = self.norm_1(x, self.attention(x, condition, rope), layers)
+        x = self.norm_2(x, self.mlp(x, condition), layers)
 
         return x
 

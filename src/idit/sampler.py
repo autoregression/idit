@@ -7,7 +7,8 @@ import torchvision
 import tqdm
 
 from src.idit.model import IDiT
-from src.idit.shared import TIMESTAMP_PATTERN, ROOT_FOLDER, list_timestamp_paths, dtype, acc_device as device
+from src.idit.shared import ROOT_FOLDER, TIMESTAMP_PATTERN, dtype, list_timestamp_paths
+from src.idit.shared import acc_device as device
 
 
 class IDiTSamplerConfig(pyds.BaseSettings):
@@ -34,7 +35,7 @@ class IDiTSampler(typing.NamedTuple):
             else:
                 raise FileNotFoundError(f"No checkpoint folder found in {ROOT_FOLDER / 'checkpoint'}")
 
-        model = IDiT.from_checkpoint(self.config.checkpoint_path).to(device, dtype)
+        model = IDiT.from_checkpoint(model_folder).to(device, dtype)
 
         noisy = torch.randn(
             self.config.batch_size,

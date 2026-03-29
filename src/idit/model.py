@@ -142,7 +142,7 @@ class IDiT(torch.nn.Module):
 
         self.config = config
         self.time_embedding = ConditionEmbedding(config.condition_dimension, config.frequency_dimension)
-        self.iteration_embedding = ConditionEmbedding(config.condition_dimension, config.frequency_dimension)
+        self.iteration_embedding = ConditionEmbedding(config.condition_dimension, config.frequency_dimension)  # https://arxiv.org/abs/1807.03819
         self.patch_embedding = PatchEmbedding(config.input_dimension, config.hidden_dimension, config.input_height, config.input_width)
         self.patch_unembedding = PatchUnembedding(config.hidden_dimension, config.input_dimension, config.input_height, config.input_width)
         self.blocks = torch.nn.ModuleList([IDiTBlock(config) for _ in range(config.layers)])

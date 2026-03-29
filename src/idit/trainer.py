@@ -6,6 +6,7 @@ import torch
 import torchvision
 import tqdm
 
+from src.idit.shared import dtype, new_timestamp_path, acc_device as device
 from src.idit.model import IDiT, IDiTConfig
 
 
@@ -33,7 +34,7 @@ class IDiTTrainerConfig(pyds.BaseSettings):
     # Optimizer.
 
     steps: int = 20_000
-    batch_size: int = 4
+    batch_size: int = 4 if device.type != "mps" else 1
     gradient_accumulation: int = 1
     learning_rate: float = 1e-3
     warmup: int = 100
@@ -49,8 +50,6 @@ class IDiTTrainer(typing.NamedTuple):
 
     def train(self) -> None:
         torch.manual_seed(self.config.seed)
-        device = torch.device("cuda" if torch.cuda.is_available() else "mps" if torch.backends.mps.is_available() else "cpu")
-        dtype = torch.float32
 
         # Data.
 
@@ -118,4 +117,4 @@ class IDiTTrainer(typing.NamedTuple):
             optimizer.step()
             scheduler.step()
 
-        model.save_checkpoint(self.config.checkpoint_path)
+        model.save_checkpoint(new_timestamp_path(self.config.checkpoint_path))

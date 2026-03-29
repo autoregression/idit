@@ -28,4 +28,32 @@ requires = ["uv_build>=0.8.2,<0.9.0"]
 build-backend = "uv_build"
 
 [tool.ruff]
-line-length=160
+line-length = 160
+
+[dependency-groups]
+dev = ["dotenv>=0.9.9", "pyright>=1.1.408", "pytest>=9.0.2", "ruff>=0.15.8"]
+[project.optional-dependencies]
+cuda = ["torch", "torchvision", "triton ; sys_platform != 'win32' and sys_platform != 'darwin'", "triton-windows ; sys_platform == 'win32'"]
+cpu = ["torch", "torchvision"]
+mps = ["torch", "torchvision"]
+dev = ["dotenv>=0.9.9", "pyright>=1.1.408", "pytest>=9.0.2", "ruff>=0.15.8"]
+
+[tool.uv]
+prerelease = "allow"
+preview = true
+
+conflicts = [[{ extra = "cpu" }, { extra = "mps" }, { extra = "cuda" }]]
+
+[[tool.uv.index]]
+name = "pytorch-cpu"
+url = "https://download.pytorch.org/whl/cpu"
+explicit = true
+
+[[tool.uv.index]]
+name = "pytorch-cu128"
+url = "https://download.pytorch.org/whl/cu128"
+explicit = true
+
+[tool.uv.sources]
+torchvision = [{ index = "pytorch-cpu", extra = "mps", marker = "sys_platform == 'darwin'" }, { index = "pytorch-cu128", extra = "cuda", marker = "sys_platform != 'darwin'" }]
+torch = [{ index = "pytorch-cpu", extra = "mps", marker = "sys_platform == 'darwin'" }, { index = "pytorch-cu128", extra = "cuda", marker = "sys_platform != 'darwin'" }]

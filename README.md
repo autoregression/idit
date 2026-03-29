@@ -43,8 +43,8 @@ steps=20000 batch_size=16 uv run train.py
 | `dataset_path`          | The path to a Hugging Face dataset (e.g., `"ILSVRC/imagenet-1k"`). | `"mnist"`      |
 | `split`                 | The dataset split to train on, typically `"train"`.                | `"train"`      |
 | `column`                | The dataset column to train on, typically `"image"`.               | `"image"`      |
-| `input_height`          | The height that images will have when given to the model.          | `16`           |
-| `input_width`           | The width that images will have when given to the model.           | `16`           |
+| `input_height`          | The height of images given to the model.                           | `16`           |
+| `input_width`           | The width of images given to the model.                            | `16`           |
 | `input_dimension`       | The number of image channels (e.g., 1 for grayscale, 3 for RGB).   | `1`            |
 | `hidden_dimension`      | The dimensionality of the model.                                   | `64`           |
 | `head_dimension`        | The dimensionality of attention heads.                             | `16`           |
@@ -64,12 +64,12 @@ steps=20000 batch_size=16 uv run train.py
 ### Sampler Configuration
 
 
-| Parameter         | Description                     | Default        |
-| ----------------- | ------------------------------- | -------------- |
-| `seed`            | The RNG seed.                   | `0`            |
-| `steps`           | The number of solver steps.     | `20`           |
-| `batch_size`      | The number of samples to save.  | `16`           |
-| `samples_path`    | The path to save samples to.    | `"samples"`    |
-| `checkpoint_path` | The path to a model checkpoint. | `"checkpoint"` |
+| Parameter         | Description                        | Default        |
+| ----------------- | ---------------------------------- | -------------- |
+| `seed`            | The RNG seed.                      | `0`            |
+| `steps`           | The number of solver steps.        | `20`           |
+| `batch_size`      | The number of samples to generate. | `16`           |
+| `samples_path`    | The path to save samples to.       | `"samples"`    |
+| `checkpoint_path` | The path to a model checkpoint.    | `"checkpoint"` |
 
 

@@ -1,6 +1,6 @@
 # IDiT - Iterative Diffusion Transformer
 
-A DiT architecture that uses each layer more than once, ala [Universal Transformers](https://arxiv.org/abs/1807.03819). Playing around with very low compute.
+A DiT architecture that uses each layer more than once, ala [Universal Transformers](https://arxiv.org/abs/1807.03819).
 
 ## Installation
 

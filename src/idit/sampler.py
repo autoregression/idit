@@ -7,6 +7,7 @@ import torchvision
 import tqdm
 
 from src.idit.model import IDiT
+from src.idit.shared import TIMESTAMP_PATTERN, ROOT_FOLDER, list_timestamp_paths, dtype, acc_device as device
 
 
 class IDiTSamplerConfig(pyds.BaseSettings):
@@ -24,8 +25,14 @@ class IDiTSampler(typing.NamedTuple):
     @torch.inference_mode()
     def sample(self) -> None:
         torch.manual_seed(self.config.seed)
-        device = torch.device("cuda" if torch.cuda.is_available() else "mps" if torch.backends.mps.is_available() else "cpu")
-        dtype = torch.float32
+
+        if TIMESTAMP_PATTERN.fullmatch(self.config.checkpoint_path):
+            model_folder = ROOT_FOLDER / "checkpoint" / self.config.checkpoint_path
+        else:
+            if paths := list_timestamp_paths():
+                model_folder = ROOT_FOLDER / "checkpoint" / paths[0]
+            else:
+                raise FileNotFoundError(f"No checkpoint folder found in {ROOT_FOLDER / 'checkpoint'}")
 
         model = IDiT.from_checkpoint(self.config.checkpoint_path).to(device, dtype)
 
@@ -48,4 +55,6 @@ class IDiTSampler(typing.NamedTuple):
         for i, sample in enumerate(noisy):
             image = torchvision.transforms.ToPILImage()(sample.clip(0, 1))
             image = image.resize((256, 256), 0)
-            image.save(f"{self.config.samples_path}/sample_{i:03d}.png")
+            image_path = ROOT_FOLDER / self.config.samples_path / model_folder.name
+            image_path.mkdir(exist_ok=True)
+            image.save(f"{image_path}/sample_{i:03d}.png")

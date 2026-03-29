@@ -1,6 +1,6 @@
 # IDiT - Iterative Diffusion Transformer
 
-A DiT architecture that uses each layer more than once. Playing around with very very low compute.
+A DiT architecture that uses each layer more than once, ala [Universal Transformers](https://arxiv.org/abs/1807.03819). Playing around with very low compute.
 
 ## Installation
 
@@ -36,6 +36,7 @@ steps=20000 batch_size=16 uv run train.py
 
 ### Trainer Configuration
 
+
 | Parameter               | Description                                                        | Default        |
 | ----------------------- | ------------------------------------------------------------------ | -------------- |
 | `seed`                  | The RNG seed.                                                      | `0`            |
@@ -49,8 +50,8 @@ steps=20000 batch_size=16 uv run train.py
 | `head_dimension`        | The dimensionality of attention heads.                             | `16`           |
 | `condition_dimension`   | The dimensionality of condition embeddings.                        | `64`           |
 | `frequency_dimension`   | The dimensionality of frequency embeddings.                        | `256`          |
-| `layers`                | The number of model layers.                                        | `2`            |
-| `iterations`            | The number of iterations per layer.                                | `4`            |
+| `layers`                | The number of layers.                                              | `2`            |
+| `iterations`            | The number of iterations.                                          | `4`            |
 | `steps`                 | The number of training steps.                                      | `10000`        |
 | `batch_size`            | The training batch size.                                           | `4`            |
 | `gradient_accumulation` | The number of gradient accumulation steps.                         | `1`            |
@@ -59,7 +60,9 @@ steps=20000 batch_size=16 uv run train.py
 | `cooldown`              | The number of learning rate cooldown steps.                        | `500`          |
 | `checkpoint_path`       | The path to save the model checkpoint to.                          | `"checkpoint"` |
 
+
 ### Sampler Configuration
+
 
 | Parameter         | Description                     | Default        |
 | ----------------- | ------------------------------- | -------------- |
@@ -68,3 +71,5 @@ steps=20000 batch_size=16 uv run train.py
 | `batch_size`      | The number of samples to save.  | `16`           |
 | `samples_path`    | The path to save samples to.    | `"samples"`    |
 | `checkpoint_path` | The path to a model checkpoint. | `"checkpoint"` |
+
+

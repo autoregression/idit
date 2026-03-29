@@ -9,8 +9,6 @@ import torch
 
 
 class IDiTConfig(pyd.BaseModel):
-    input_height: int
-    input_width: int
     input_dimension: int
     hidden_dimension: int
     head_dimension: int
@@ -18,6 +16,7 @@ class IDiTConfig(pyd.BaseModel):
     frequency_dimension: int
     layers: int
     iterations: int
+    patch_size: int
 
 
 class ConditionEmbedding(torch.nn.Module):  # https://arxiv.org/abs/2006.10739
@@ -37,27 +36,32 @@ class ConditionEmbedding(torch.nn.Module):  # https://arxiv.org/abs/2006.10739
 
 
 class PatchEmbedding(torch.nn.Module):  # https://arxiv.org/abs/2010.11929
-    def __init__(self, input_dimension: int, hidden_dimension: int, height: int, width: int) -> None:
+    def __init__(self, input_dimension: int, hidden_dimension: int, patch_size: int) -> None:
         super().__init__()
 
-        self.height = height
-        self.width = width
-        self.linear = torch.nn.Linear(input_dimension, hidden_dimension, bias=False)
+        self.patch_size = patch_size
+        self.linear = torch.nn.Linear(input_dimension * self.patch_size * self.patch_size, hidden_dimension, bias=False)
 
-    def forward(self, x: torch.Tensor) -> torch.Tensor:
-        return self.linear(einops.rearrange(x, "b c h w -> b (h w) c", h=self.height, w=self.width))
+    def forward(self, x: torch.Tensor) -> tuple[torch.Tensor, int, int]:
+        height, width = x.size(-2) // self.patch_size, x.size(-1) // self.patch_size
+        x = einops.rearrange(x, "b c (h p) (w q) -> b (h w) (c p q)", p=self.patch_size, q=self.patch_size)
+        x = self.linear(x)
+
+        return x, height, width
 
 
 class PatchUnembedding(torch.nn.Module):  # https://arxiv.org/abs/2010.11929
-    def __init__(self, hidden_dimension: int, input_dimension: int, height: int, width: int) -> None:
+    def __init__(self, hidden_dimension: int, input_dimension: int, patch_size: int) -> None:
         super().__init__()
 
-        self.height = height
-        self.width = width
-        self.linear = zero_init(torch.nn.Linear(hidden_dimension, input_dimension, bias=False))
+        self.patch_size = patch_size
+        self.linear = zero_init(torch.nn.Linear(hidden_dimension, input_dimension * self.patch_size * self.patch_size, bias=False))
 
-    def forward(self, x: torch.Tensor) -> torch.Tensor:
-        return einops.rearrange(self.linear(x), "b (h w) c -> b c h w", h=self.height, w=self.width)
+    def forward(self, x: torch.Tensor, height: int, width: int) -> torch.Tensor:
+        x = self.linear(x)
+        x = einops.rearrange(x, "b (h w) (c p q) -> b c (h p) (w q)", h=height, w=width, p=self.patch_size, q=self.patch_size)
+
+        return x
 
 
 class AdaRMSNorm(torch.nn.Module):  # https://arxiv.org/abs/2401.11605
@@ -143,25 +147,23 @@ class IDiT(torch.nn.Module):
         self.config = config
         self.time_embedding = ConditionEmbedding(config.condition_dimension, config.frequency_dimension)
         self.iteration_embedding = ConditionEmbedding(config.condition_dimension, config.frequency_dimension)  # https://arxiv.org/abs/1807.03819
-        self.patch_embedding = PatchEmbedding(config.input_dimension, config.hidden_dimension, config.input_height, config.input_width)
-        self.patch_unembedding = PatchUnembedding(config.hidden_dimension, config.input_dimension, config.input_height, config.input_width)
+        self.patch_embedding = PatchEmbedding(config.input_dimension, config.hidden_dimension, config.patch_size)
+        self.patch_unembedding = PatchUnembedding(config.hidden_dimension, config.input_dimension, config.patch_size)
         self.blocks = torch.nn.ModuleList([IDiTBlock(config) for _ in range(config.layers)])
-        self.rope: torch.Tensor
-
-        self.register_buffer("rope", create_rope_2d(config.head_dimension, config.input_height, config.input_width))
 
     def predict(self, x: torch.Tensor, *, time: torch.Tensor) -> torch.Tensor:
         time_condition = self.time_embedding(time)
-        x = self.patch_embedding(x)
+        x, height, width = self.patch_embedding(x)
+        rope = create_rope_2d(self.config.head_dimension, height, width).to(x.device, x.dtype)
 
         for iteration in range(self.config.iterations):
             iteration_condition = self.iteration_embedding(torch.full((x.size(0),), iteration / self.config.iterations, device=x.device, dtype=x.dtype))
             condition = time_condition + iteration_condition
 
             for block in self.blocks:
-                x = block(x, condition, self.rope, layers=self.config.layers * self.config.iterations)
+                x = block(x, condition, rope, layers=self.config.layers * self.config.iterations)
 
-        x = self.patch_unembedding(x)
+        x = self.patch_unembedding(x, height, width)
 
         return x
 
@@ -193,9 +195,9 @@ class IDiT(torch.nn.Module):
 # Functions.
 
 
-def create_rope_1d(head_dimension: int, length: int) -> torch.Tensor:  # https://arxiv.org/abs/2104.09864
-    frequency = torch.linspace(math.log(1.0), math.log(length / 4), steps=head_dimension // 2).exp()
-    x = torch.linspace(-math.pi / 2, math.pi / 2, length)
+def create_rope_1d(head_dimension: int, sequence_length: int) -> torch.Tensor:  # https://arxiv.org/abs/2104.09864
+    frequency = torch.linspace(math.log(1.0), math.log(sequence_length / 4), steps=head_dimension // 2).exp()
+    x = torch.linspace(-math.pi / 2, math.pi / 2, sequence_length)
     x = x.unsqueeze(-1) * frequency
     x = torch.stack([x.cos(), x.sin()]).repeat_interleave(2, dim=-1)
 
@@ -210,9 +212,9 @@ def create_rope_2d(head_dimension: int, height: int, width: int) -> torch.Tensor
 
 
 def apply_rope(x: torch.Tensor, rope: torch.Tensor) -> torch.Tensor:
-    x_hat = torch.stack([-x[..., 1::2], x[..., ::2]], dim=-1).flatten(-2)
+    y = torch.stack([-x[..., 1::2], x[..., ::2]], dim=-1).flatten(-2)
 
-    return x * rope[0] + x_hat * rope[1]
+    return x * rope[0] + y * rope[1]
 
 
 T = typing.TypeVar("T", bound=torch.nn.Module)

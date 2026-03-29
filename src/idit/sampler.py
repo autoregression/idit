@@ -11,6 +11,7 @@ from src.idit.model import IDiT
 
 class IDiTSamplerConfig(pyds.BaseSettings):
     seed: int = 0
+    resolution: int = 28
     steps: int = 20
     batch_size: int = 16
     samples_path: str = "samples"
@@ -31,8 +32,8 @@ class IDiTSampler(typing.NamedTuple):
         noisy = torch.randn(
             self.config.batch_size,
             model.config.input_dimension,
-            model.config.input_height,
-            model.config.input_width,
+            self.config.resolution,
+            self.config.resolution,
             device=device,
             dtype=dtype,
         )

@@ -1,4 +1,3 @@
-import copy
 import typing
 
 import datasets
@@ -18,31 +17,29 @@ class IDiTTrainerConfig(pyds.BaseSettings):
     dataset_path: str = "mnist"
     split: str = "train"
     column: str = "image"
+    resolution: int = 28
 
     # Model.
 
-    input_height: int = 16
-    input_width: int = 16
     input_dimension: int = 1
     hidden_dimension: int = 64
     head_dimension: int = 16
     condition_dimension: int = 64
     frequency_dimension: int = 256
-    layers: int = 2
-    iterations: int = 4
+    layers: int = 1
+    iterations: int = 8
+    patch_size: int = 2
 
     # Optimizer.
 
-    steps: int = 10_000
+    steps: int = 20_000
     batch_size: int = 4
     gradient_accumulation: int = 1
     learning_rate: float = 1e-3
     warmup: int = 100
-    ema: int = 1000
-    ema_beta: float = 0.999
-    ema_exponent: float = 10.0
+    cooldown: int = 500
 
-    # Tracker.
+    # Checkpointer.
 
     checkpoint_path: str = "checkpoint"
 
@@ -55,11 +52,13 @@ class IDiTTrainer(typing.NamedTuple):
         device = torch.device("cuda" if torch.cuda.is_available() else "mps" if torch.backends.mps.is_available() else "cpu")
         dtype = torch.float32
 
+        print(self.config)
+
         # Data.
 
         transform = torchvision.transforms.Compose(
             [
-                torchvision.transforms.Resize((self.config.input_height, self.config.input_width)),
+                torchvision.transforms.Resize((self.config.resolution, self.config.resolution)),
                 torchvision.transforms.ToTensor(),
             ]
         )
@@ -79,8 +78,6 @@ class IDiTTrainer(typing.NamedTuple):
 
         model = IDiT(
             config=IDiTConfig(
-                input_height=self.config.input_height,
-                input_width=self.config.input_width,
                 input_dimension=self.config.input_dimension,
                 hidden_dimension=self.config.hidden_dimension,
                 head_dimension=self.config.head_dimension,
@@ -88,23 +85,25 @@ class IDiTTrainer(typing.NamedTuple):
                 frequency_dimension=self.config.frequency_dimension,
                 layers=self.config.layers,
                 iterations=self.config.iterations,
+                patch_size=self.config.patch_size,
             )
         ).to(device, dtype)
 
-        ema_model = copy.deepcopy(model)
-
         # Optimizer.
 
-        def warmup_constant(step: int) -> float:
+        def warmup_stable_decay(step: int) -> float:
             if step < self.config.warmup:
                 return step / self.config.warmup
 
-            return 1.0
+            if step < self.config.steps - self.config.cooldown:
+                return 1.0
+
+            return max(0, 1 - (step - (self.config.steps - self.config.cooldown)) / self.config.cooldown)
 
         optimizer = torch.optim.AdamW(model.parameters(), lr=self.config.learning_rate)
-        scheduler = torch.optim.lr_scheduler.LambdaLR(optimizer, warmup_constant)
+        scheduler = torch.optim.lr_scheduler.LambdaLR(optimizer, warmup_stable_decay)
 
-        for step in tqdm.trange(self.config.steps, colour="green", desc="Training"):
+        for _ in tqdm.trange(self.config.steps, colour="green", desc="Training"):
             total_loss = 0.0
             optimizer.zero_grad()
 
@@ -118,11 +117,4 @@ class IDiTTrainer(typing.NamedTuple):
             optimizer.step()
             scheduler.step()
 
-            if (step + 1) % max(self.config.steps // self.config.ema, 1) == 0:
-                with torch.no_grad():
-                    for parameter, ema_parameter in zip(model.parameters(), ema_model.parameters()):
-                        progress = (step + 1) / self.config.steps
-                        beta = self.config.ema_beta - (1 - progress) ** self.config.ema_exponent
-                        ema_parameter.data = beta * ema_parameter.data + (1 - beta) * parameter.data
-
-        ema_model.save_checkpoint(self.config.checkpoint_path)
+        model.save_checkpoint(self.config.checkpoint_path)

@@ -150,7 +150,7 @@ class IDiT(torch.nn.Module):
 
         self.register_buffer("rope", create_rope_2d(config.head_dimension, config.input_height, config.input_width))
 
-    def predict(self, x: torch.Tensor, *, time: torch.Tensor, negative: bool = False) -> torch.Tensor:
+    def predict(self, x: torch.Tensor, *, time: torch.Tensor) -> torch.Tensor:
         time_condition = self.time_embedding(time)
         x = self.patch_embedding(x)
 

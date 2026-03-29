@@ -174,14 +174,14 @@ class IDiT(torch.nn.Module):
 
         return loss
 
-    def save_checkpoint(self, checkpoint_path: str) -> None:
+    def save_checkpoint(self, checkpoint_path: str | pathlib.Path) -> None:
         checkpoint_path = pathlib.Path(checkpoint_path)
         checkpoint_path.mkdir(parents=True, exist_ok=True)
         (checkpoint_path / "config.json").write_text(self.config.model_dump_json(indent=4))
         safetensors.torch.save_file(self.state_dict(), checkpoint_path / "model.safetensors")
 
     @classmethod
-    def from_checkpoint(cls, checkpoint_path: str) -> typing.Self:
+    def from_checkpoint(cls, checkpoint_path: str | pathlib.Path) -> typing.Self:
         checkpoint_path = pathlib.Path(checkpoint_path)
         config = IDiTConfig.model_validate_json((checkpoint_path / "config.json").read_text())
         model = cls(config)

@@ -56,8 +56,10 @@ steps=20000 batch_size=16 uv run train.py
 | `batch_size`            | The training batch size.                                           | `4`            |
 | `gradient_accumulation` | The number of gradient accumulation steps.                         | `1`            |
 | `learning_rate`         | The learning rate.                                                 | `1e-3`         |
-| `warmup`                | The number of learning rate warmup steps.                          | `100`          |
-| `cooldown`              | The number of learning rate cooldown steps.                        | `500`          |
+| `warmup`                | The number of warmup steps.                                        | `100`          |
+| `ema`                   | The nuber of EMA steps.                                            | `1000`         |
+| `ema_beta`              | The EMA beta.                                                      | `0.999`        |
+| `ema_exponent`          | The EMA ramp up exponent.                                          | `10.0`         |
 | `checkpoint_path`       | The path to save the model checkpoint to.                          | `"checkpoint"` |
 
 

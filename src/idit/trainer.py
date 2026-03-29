@@ -1,3 +1,4 @@
+import copy
 import typing
 
 import datasets
@@ -37,7 +38,9 @@ class IDiTTrainerConfig(pyds.BaseSettings):
     gradient_accumulation: int = 1
     learning_rate: float = 1e-3
     warmup: int = 100
-    cooldown: int = 500
+    ema: int = 1000
+    ema_beta: float = 0.999
+    ema_exponent: float = 10.0
 
     # Tracker.
 
@@ -88,21 +91,20 @@ class IDiTTrainer(typing.NamedTuple):
             )
         ).to(device, dtype)
 
+        ema_model = copy.deepcopy(model)
+
         # Optimizer.
 
-        def warmup_stable_decay(step: int) -> float:
+        def warmup_constant(step: int) -> float:
             if step < self.config.warmup:
                 return step / self.config.warmup
 
-            if step < self.config.steps - self.config.cooldown:
-                return 1.0
-
-            return max(0, 1 - (step - (self.config.steps - self.config.cooldown)) / self.config.cooldown)
+            return 1.0
 
         optimizer = torch.optim.AdamW(model.parameters(), lr=self.config.learning_rate)
-        scheduler = torch.optim.lr_scheduler.LambdaLR(optimizer, warmup_stable_decay)
+        scheduler = torch.optim.lr_scheduler.LambdaLR(optimizer, warmup_constant)
 
-        for _ in tqdm.trange(self.config.steps, colour="green", desc="Training"):
+        for step in tqdm.trange(self.config.steps, colour="green", desc="Training"):
             total_loss = 0.0
             optimizer.zero_grad()
 
@@ -116,4 +118,11 @@ class IDiTTrainer(typing.NamedTuple):
             optimizer.step()
             scheduler.step()
 
-        model.save_checkpoint(self.config.checkpoint_path)
+            if (step + 1) % max(self.config.steps // self.config.ema, 1) == 0:
+                with torch.no_grad():
+                    for parameter, ema_parameter in zip(model.parameters(), ema_model.parameters()):
+                        progress = (step + 1) / self.config.steps
+                        beta = self.config.ema_beta - (1 - progress) ** self.config.ema_exponent
+                        ema_parameter.data = beta * ema_parameter.data + (1 - beta) * parameter.data
+
+        ema_model.save_checkpoint(self.config.checkpoint_path)

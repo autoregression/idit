@@ -30,7 +30,7 @@ class ConditionEmbedding(torch.nn.Module):  # https://arxiv.org/abs/2006.10739
         self.register_buffer("frequency", torch.linspace(math.log(1.0), math.log(max_frequency), steps=frequency_dimension // 2).exp())
 
     def forward(self, condition: torch.Tensor) -> torch.Tensor:
-        x = condition.unsqueeze(-1) * self.frequency
+        x = condition.unsqueeze(-1) * (math.pi / 2) * self.frequency
         x = self.linear(torch.cat([x.cos(), x.sin()], dim=-1))
 
         return x

@@ -52,8 +52,6 @@ class IDiTTrainer(typing.NamedTuple):
         device = torch.device("cuda" if torch.cuda.is_available() else "mps" if torch.backends.mps.is_available() else "cpu")
         dtype = torch.float32
 
-        print(self.config)
-
         # Data.
 
         transform = torchvision.transforms.Compose(
@@ -88,6 +86,9 @@ class IDiTTrainer(typing.NamedTuple):
                 patch_size=self.config.patch_size,
             )
         ).to(device, dtype)
+
+        parameters = sum(parameter.numel() for parameter in model.parameters() if parameter.requires_grad)
+        print(f"Training {parameters / 1e6:.2f}M parameters on {device}")
 
         # Optimizer.
 

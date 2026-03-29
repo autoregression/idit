@@ -29,7 +29,7 @@ uv run sample.py
 Tweak parameters.
 
 ```
-steps=20000 batch_size=16 uv run train.py
+batch_size=16 iterations=16 uv run train.py
 ```
 
 ## Configuration

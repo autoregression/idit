@@ -60,7 +60,7 @@ steps=20000 batch_size=16 uv run train.py
 | `ema`                   | The nuber of EMA steps.                                            | `1000`         |
 | `ema_beta`              | The EMA beta.                                                      | `0.999`        |
 | `ema_exponent`          | The EMA ramp up exponent.                                          | `10.0`         |
-| `checkpoint_path`       | The path to save the model checkpoint to.                          | `"checkpoint"` |
+| `checkpoint_path`       | The path to save the model to.                                     | `"checkpoint"` |
 
 
 ### Sampler Configuration
@@ -72,6 +72,6 @@ steps=20000 batch_size=16 uv run train.py
 | `steps`           | The number of solver steps.        | `20`           |
 | `batch_size`      | The number of samples to generate. | `16`           |
 | `samples_path`    | The path to save samples to.       | `"samples"`    |
-| `checkpoint_path` | The path to a model checkpoint.    | `"checkpoint"` |
+| `checkpoint_path` | The path to the model.             | `"checkpoint"` |
 
 

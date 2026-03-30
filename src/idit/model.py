@@ -1,3 +1,6 @@
+from idit.shared import list_timestamp_paths
+from idit.shared import ROOT_FOLDER
+from idit.shared import TIMESTAMP_PATTERN
 import math
 import pathlib
 import typing
@@ -6,6 +9,8 @@ import einops
 import pydantic as pyd
 import safetensors.torch
 import torch
+
+from idit.shared import new_timestamp_path
 
 
 class IDiTConfig(pyd.BaseModel):
@@ -177,6 +182,7 @@ class IDiT(torch.nn.Module):
         return loss
 
     def save_checkpoint(self, checkpoint_path: str | pathlib.Path) -> None:
+        checkpoint_path = new_timestamp_path(checkpoint_path)
         checkpoint_path = pathlib.Path(checkpoint_path)
         checkpoint_path.mkdir(parents=True, exist_ok=True)
         (checkpoint_path / "config.json").write_text(self.config.model_dump_json(indent=4))
@@ -184,7 +190,15 @@ class IDiT(torch.nn.Module):
 
     @classmethod
     def from_checkpoint(cls, checkpoint_path: str | pathlib.Path) -> typing.Self:
-        checkpoint_path = pathlib.Path(checkpoint_path)
+
+        if TIMESTAMP_PATTERN.fullmatch(checkpoint_path):
+            checkpoint_path = ROOT_FOLDER / "checkpoint" / checkpoint_path
+        else:
+            if paths := list_timestamp_paths():
+                checkpoint_path = ROOT_FOLDER / "checkpoint" / paths[0]
+            else:
+                raise FileNotFoundError(f"No checkpoint folder found in {ROOT_FOLDER / 'checkpoint'}")
+
         config = IDiTConfig.model_validate_json((checkpoint_path / "config.json").read_text())
         model = cls(config)
         model.load_state_dict(safetensors.torch.load_file(checkpoint_path / "model.safetensors"))

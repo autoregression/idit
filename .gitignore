@@ -12,3 +12,4 @@ wheels/
 # Artifacts
 checkpoint/
 samples/
+.DS_Store

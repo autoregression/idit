@@ -3,12 +3,10 @@ import typing
 
 import pydantic_settings as pyds
 import torch
-import torchvision
 import tqdm
 
 from src.idit.model import IDiT
-from src.idit.shared import ROOT_FOLDER, TIMESTAMP_PATTERN, dtype, list_timestamp_paths
-from src.idit.shared import acc_device as device
+from src.idit.shared import dtype, acc_device as device, load_timestamp_path, save_image_stack
 
 
 class IDiTSamplerConfig(pyds.BaseSettings):
@@ -27,15 +25,8 @@ class IDiTSampler(typing.NamedTuple):
     def sample(self) -> None:
         torch.manual_seed(self.config.seed)
 
-        if TIMESTAMP_PATTERN.fullmatch(self.config.checkpoint_path):
-            model_folder = ROOT_FOLDER / "checkpoint" / self.config.checkpoint_path
-        else:
-            if paths := list_timestamp_paths():
-                model_folder = ROOT_FOLDER / "checkpoint" / paths[0]
-            else:
-                raise FileNotFoundError(f"No checkpoint folder found in {ROOT_FOLDER / 'checkpoint'}")
-
-        model = IDiT.from_checkpoint(model_folder).to(device, dtype)
+        checkpoint_folder = load_timestamp_path(self.config.checkpoint_path)
+        model = IDiT.from_checkpoint(checkpoint_folder).to(device, dtype)
 
         noisy = torch.randn(
             self.config.batch_size,
@@ -53,9 +44,4 @@ class IDiTSampler(typing.NamedTuple):
 
         os.makedirs(self.config.samples_path, exist_ok=True)
 
-        for i, sample in enumerate(noisy):
-            image = torchvision.transforms.ToPILImage()(sample.clip(0, 1))
-            image = image.resize((256, 256), 0)
-            image_path = ROOT_FOLDER / self.config.samples_path / model_folder.name
-            image_path.mkdir(exist_ok=True)
-            image.save(f"{image_path}/sample_{i:03d}.png")
+        save_image_stack(samples=noisy, timestamp=checkpoint_folder.stem)

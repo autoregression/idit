@@ -205,7 +205,7 @@ class IDiT(torch.nn.Module):
     @classmethod
     def from_checkpoint(cls, checkpoint_path: str | pathlib.Path) -> typing.Self:
 
-        if TIMESTAMP_PATTERN.fullmatch(checkpoint_path):
+        if TIMESTAMP_PATTERN.fullmatch(str(checkpoint_path)):
             checkpoint_path = ROOT_FOLDER / "checkpoint" / checkpoint_path
         else:
             if paths := list_timestamp_paths():

@@ -286,11 +286,15 @@ name = "cuda-bindings"
 version = "13.2.0"
 source = { registry = "https://pypi.org/simple" }
 resolution-markers = [
-    "python_full_version >= '3.14' and sys_platform != 'emscripten' and sys_platform != 'win32'",
-    "python_full_version < '3.14' and sys_platform != 'emscripten' and sys_platform != 'win32'",
+    "python_full_version >= '3.14' and sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'win32' and extra != 'extra-4-idit-cpu' and extra != 'extra-4-idit-cuda' and extra == 'extra-4-idit-mps'",
+    "python_full_version >= '3.14' and sys_platform != 'emscripten' and sys_platform != 'win32' and extra == 'extra-4-idit-cpu' and extra != 'extra-4-idit-cuda' and extra != 'extra-4-idit-mps'",
+    "python_full_version >= '3.14' and sys_platform != 'emscripten' and sys_platform != 'win32' and extra != 'extra-4-idit-cpu' and extra != 'extra-4-idit-cuda' and extra != 'extra-4-idit-mps'",
+    "python_full_version < '3.14' and sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'win32' and extra != 'extra-4-idit-cpu' and extra != 'extra-4-idit-cuda' and extra == 'extra-4-idit-mps'",
+    "python_full_version < '3.14' and sys_platform != 'emscripten' and sys_platform != 'win32' and extra == 'extra-4-idit-cpu' and extra != 'extra-4-idit-cuda' and extra != 'extra-4-idit-mps'",
+    "python_full_version < '3.14' and sys_platform != 'emscripten' and sys_platform != 'win32' and extra != 'extra-4-idit-cpu' and extra != 'extra-4-idit-cuda' and extra != 'extra-4-idit-mps'",
 ]
 dependencies = [
-    { name = "cuda-pathfinder", marker = "(sys_platform != 'emscripten' and sys_platform != 'win32' and extra == 'extra-4-idit-cpu') or (sys_platform != 'emscripten' and sys_platform != 'win32' and extra != 'extra-4-idit-cuda' and extra != 'extra-4-idit-mps') or (sys_platform == 'emscripten' and extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-cuda') or (sys_platform == 'emscripten' and extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-mps') or (sys_platform == 'win32' and extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-cuda') or (sys_platform == 'win32' and extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-mps') or (extra != 'extra-4-idit-cpu' and extra == 'extra-4-idit-cuda' and extra == 'extra-4-idit-mps')" },
+    { name = "cuda-pathfinder", marker = "(sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'win32' and extra != 'extra-4-idit-cuda') or (sys_platform != 'emscripten' and sys_platform != 'win32' and extra == 'extra-4-idit-cpu') or (sys_platform == 'darwin' and extra == 'extra-4-idit-cpu') or (sys_platform == 'darwin' and extra != 'extra-4-idit-cuda' and extra != 'extra-4-idit-mps') or (sys_platform == 'emscripten' and extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-cuda') or (sys_platform == 'emscripten' and extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-mps') or (sys_platform == 'win32' and extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-cuda') or (sys_platform == 'win32' and extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-mps') or (extra != 'extra-4-idit-cpu' and extra == 'extra-4-idit-cuda' and extra == 'extra-4-idit-mps')" },
 ]
 wheels = [
     { url = "https://files.pythonhosted.org/packages/df/93/eef988860a3ca985f82c4f3174fc0cdd94e07331ba9a92e8e064c260337f/cuda_bindings-13.2.0-cp313-cp313-manylinux_2_24_aarch64.manylinux_2_28_aarch64.whl", hash = "sha256:6629ca2df6f795b784752409bcaedbd22a7a651b74b56a165ebc0c9dcbd504d0", size = 5614610, upload-time = "2026-03-11T00:12:50.337Z" },
@@ -364,8 +368,12 @@ name = "cuda-toolkit"
 version = "13.0.2"
 source = { registry = "https://pypi.org/simple" }
 resolution-markers = [
-    "python_full_version >= '3.14' and sys_platform != 'emscripten' and sys_platform != 'win32'",
-    "python_full_version < '3.14' and sys_platform != 'emscripten' and sys_platform != 'win32'",
+    "python_full_version >= '3.14' and sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'win32' and extra != 'extra-4-idit-cpu' and extra != 'extra-4-idit-cuda' and extra == 'extra-4-idit-mps'",
+    "python_full_version >= '3.14' and sys_platform != 'emscripten' and sys_platform != 'win32' and extra == 'extra-4-idit-cpu' and extra != 'extra-4-idit-cuda' and extra != 'extra-4-idit-mps'",
+    "python_full_version >= '3.14' and sys_platform != 'emscripten' and sys_platform != 'win32' and extra != 'extra-4-idit-cpu' and extra != 'extra-4-idit-cuda' and extra != 'extra-4-idit-mps'",
+    "python_full_version < '3.14' and sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'win32' and extra != 'extra-4-idit-cpu' and extra != 'extra-4-idit-cuda' and extra == 'extra-4-idit-mps'",
+    "python_full_version < '3.14' and sys_platform != 'emscripten' and sys_platform != 'win32' and extra == 'extra-4-idit-cpu' and extra != 'extra-4-idit-cuda' and extra != 'extra-4-idit-mps'",
+    "python_full_version < '3.14' and sys_platform != 'emscripten' and sys_platform != 'win32' and extra != 'extra-4-idit-cpu' and extra != 'extra-4-idit-cuda' and extra != 'extra-4-idit-mps'",
 ]
 wheels = [
     { url = "https://files.pythonhosted.org/packages/57/b2/453099f5f3b698d7d0eab38916aac44c7f76229f451709e2eb9db6615dcd/cuda_toolkit-13.0.2-py2.py3-none-any.whl", hash = "sha256:b198824cf2f54003f50d64ada3a0f184b42ca0846c1c94192fa269ecd97a66eb", size = 2364, upload-time = "2025-12-19T23:24:07.328Z" },
@@ -373,37 +381,37 @@ wheels = [
 
 [package.optional-dependencies]
 cublas = [
-    { name = "nvidia-cublas", marker = "(sys_platform == 'linux' and extra == 'extra-4-idit-cpu') or (sys_platform == 'linux' and extra != 'extra-4-idit-cuda' and extra != 'extra-4-idit-mps') or (extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-cuda') or (extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-mps') or (extra == 'extra-4-idit-cuda' and extra == 'extra-4-idit-mps')" },
+    { name = "nvidia-cublas", marker = "(sys_platform == 'linux' and extra == 'extra-4-idit-cpu') or (sys_platform == 'linux' and extra != 'extra-4-idit-cuda') or (extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-cuda') or (extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-mps') or (extra == 'extra-4-idit-cuda' and extra == 'extra-4-idit-mps')" },
 ]
 cudart = [
-    { name = "nvidia-cuda-runtime", marker = "(sys_platform == 'linux' and extra == 'extra-4-idit-cpu') or (sys_platform == 'linux' and extra != 'extra-4-idit-cuda' and extra != 'extra-4-idit-mps') or (extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-cuda') or (extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-mps') or (extra == 'extra-4-idit-cuda' and extra == 'extra-4-idit-mps')" },
+    { name = "nvidia-cuda-runtime", marker = "(sys_platform == 'linux' and extra == 'extra-4-idit-cpu') or (sys_platform == 'linux' and extra != 'extra-4-idit-cuda') or (extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-cuda') or (extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-mps') or (extra == 'extra-4-idit-cuda' and extra == 'extra-4-idit-mps')" },
 ]
 cufft = [
-    { name = "nvidia-cufft", marker = "(sys_platform == 'linux' and extra == 'extra-4-idit-cpu') or (sys_platform == 'linux' and extra != 'extra-4-idit-cuda' and extra != 'extra-4-idit-mps') or (extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-cuda') or (extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-mps') or (extra == 'extra-4-idit-cuda' and extra == 'extra-4-idit-mps')" },
+    { name = "nvidia-cufft", marker = "(sys_platform == 'linux' and extra == 'extra-4-idit-cpu') or (sys_platform == 'linux' and extra != 'extra-4-idit-cuda') or (extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-cuda') or (extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-mps') or (extra == 'extra-4-idit-cuda' and extra == 'extra-4-idit-mps')" },
 ]
 cufile = [
-    { name = "nvidia-cufile", marker = "(sys_platform == 'linux' and extra == 'extra-4-idit-cpu') or (sys_platform == 'linux' and extra != 'extra-4-idit-cuda' and extra != 'extra-4-idit-mps') or (extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-cuda') or (extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-mps') or (extra == 'extra-4-idit-cuda' and extra == 'extra-4-idit-mps')" },
+    { name = "nvidia-cufile", marker = "(sys_platform == 'linux' and extra == 'extra-4-idit-cpu') or (sys_platform == 'linux' and extra != 'extra-4-idit-cuda') or (extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-cuda') or (extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-mps') or (extra == 'extra-4-idit-cuda' and extra == 'extra-4-idit-mps')" },
 ]
 cupti = [
-    { name = "nvidia-cuda-cupti", marker = "(sys_platform == 'linux' and extra == 'extra-4-idit-cpu') or (sys_platform == 'linux' and extra != 'extra-4-idit-cuda' and extra != 'extra-4-idit-mps') or (extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-cuda') or (extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-mps') or (extra == 'extra-4-idit-cuda' and extra == 'extra-4-idit-mps')" },
+    { name = "nvidia-cuda-cupti", marker = "(sys_platform == 'linux' and extra == 'extra-4-idit-cpu') or (sys_platform == 'linux' and extra != 'extra-4-idit-cuda') or (extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-cuda') or (extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-mps') or (extra == 'extra-4-idit-cuda' and extra == 'extra-4-idit-mps')" },
 ]
 curand = [
-    { name = "nvidia-curand", marker = "(sys_platform == 'linux' and extra == 'extra-4-idit-cpu') or (sys_platform == 'linux' and extra != 'extra-4-idit-cuda' and extra != 'extra-4-idit-mps') or (extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-cuda') or (extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-mps') or (extra == 'extra-4-idit-cuda' and extra == 'extra-4-idit-mps')" },
+    { name = "nvidia-curand", marker = "(sys_platform == 'linux' and extra == 'extra-4-idit-cpu') or (sys_platform == 'linux' and extra != 'extra-4-idit-cuda') or (extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-cuda') or (extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-mps') or (extra == 'extra-4-idit-cuda' and extra == 'extra-4-idit-mps')" },
 ]
 cusolver = [
-    { name = "nvidia-cusolver", marker = "(sys_platform == 'linux' and extra == 'extra-4-idit-cpu') or (sys_platform == 'linux' and extra != 'extra-4-idit-cuda' and extra != 'extra-4-idit-mps') or (extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-cuda') or (extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-mps') or (extra == 'extra-4-idit-cuda' and extra == 'extra-4-idit-mps')" },
+    { name = "nvidia-cusolver", marker = "(sys_platform == 'linux' and extra == 'extra-4-idit-cpu') or (sys_platform == 'linux' and extra != 'extra-4-idit-cuda') or (extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-cuda') or (extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-mps') or (extra == 'extra-4-idit-cuda' and extra == 'extra-4-idit-mps')" },
 ]
 cusparse = [
-    { name = "nvidia-cusparse", marker = "(sys_platform == 'linux' and extra == 'extra-4-idit-cpu') or (sys_platform == 'linux' and extra != 'extra-4-idit-cuda' and extra != 'extra-4-idit-mps') or (extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-cuda') or (extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-mps') or (extra == 'extra-4-idit-cuda' and extra == 'extra-4-idit-mps')" },
+    { name = "nvidia-cusparse", marker = "(sys_platform == 'linux' and extra == 'extra-4-idit-cpu') or (sys_platform == 'linux' and extra != 'extra-4-idit-cuda') or (extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-cuda') or (extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-mps') or (extra == 'extra-4-idit-cuda' and extra == 'extra-4-idit-mps')" },
 ]
 nvjitlink = [
-    { name = "nvidia-nvjitlink", marker = "(sys_platform == 'linux' and extra == 'extra-4-idit-cpu') or (sys_platform == 'linux' and extra != 'extra-4-idit-cuda' and extra != 'extra-4-idit-mps') or (extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-cuda') or (extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-mps') or (extra == 'extra-4-idit-cuda' and extra == 'extra-4-idit-mps')" },
+    { name = "nvidia-nvjitlink", marker = "(sys_platform == 'linux' and extra == 'extra-4-idit-cpu') or (sys_platform == 'linux' and extra != 'extra-4-idit-cuda') or (extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-cuda') or (extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-mps') or (extra == 'extra-4-idit-cuda' and extra == 'extra-4-idit-mps')" },
 ]
 nvrtc = [
-    { name = "nvidia-cuda-nvrtc", marker = "(sys_platform == 'linux' and extra == 'extra-4-idit-cpu') or (sys_platform == 'linux' and extra != 'extra-4-idit-cuda' and extra != 'extra-4-idit-mps') or (extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-cuda') or (extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-mps') or (extra == 'extra-4-idit-cuda' and extra == 'extra-4-idit-mps')" },
+    { name = "nvidia-cuda-nvrtc", marker = "(sys_platform == 'linux' and extra == 'extra-4-idit-cpu') or (sys_platform == 'linux' and extra != 'extra-4-idit-cuda') or (extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-cuda') or (extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-mps') or (extra == 'extra-4-idit-cuda' and extra == 'extra-4-idit-mps')" },
 ]
 nvtx = [
-    { name = "nvidia-nvtx", marker = "(sys_platform == 'linux' and extra == 'extra-4-idit-cpu') or (sys_platform == 'linux' and extra != 'extra-4-idit-cuda' and extra != 'extra-4-idit-mps') or (extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-cuda') or (extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-mps') or (extra == 'extra-4-idit-cuda' and extra == 'extra-4-idit-mps')" },
+    { name = "nvidia-nvtx", marker = "(sys_platform == 'linux' and extra == 'extra-4-idit-cpu') or (sys_platform == 'linux' and extra != 'extra-4-idit-cuda') or (extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-cuda') or (extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-mps') or (extra == 'extra-4-idit-cuda' and extra == 'extra-4-idit-mps')" },
 ]
 
 [[package]]
@@ -655,19 +663,19 @@ dependencies = [
     { name = "einops" },
     { name = "huggingface-hub" },
     { name = "numpy" },
+    { name = "pillow" },
     { name = "pydantic" },
     { name = "pydantic-settings" },
     { name = "pyright" },
     { name = "ruff" },
     { name = "safetensors" },
+    { name = "sympy" },
     { name = "torch", version = "2.11.0", source = { registry = "https://download.pytorch.org/whl/cpu" }, marker = "(sys_platform == 'darwin' and extra == 'extra-4-idit-mps') or (extra == 'extra-4-idit-cuda' and extra == 'extra-4-idit-mps') or (extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-cuda') or (extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-mps')" },
-    { name = "torch", version = "2.11.0", source = { registry = "https://pypi.org/simple" }, marker = "(sys_platform == 'emscripten' and extra != 'extra-4-idit-cuda') or (sys_platform == 'win32' and extra != 'extra-4-idit-cuda') or extra == 'extra-4-idit-cpu' or (extra != 'extra-4-idit-cuda' and extra != 'extra-4-idit-mps') or (extra == 'extra-4-idit-cuda' and extra == 'extra-4-idit-mps')" },
-    { name = "torch", version = "2.11.0+cpu", source = { registry = "https://download.pytorch.org/whl/cpu" }, marker = "(sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'win32' and extra == 'extra-4-idit-mps') or (sys_platform == 'darwin' and extra == 'extra-4-idit-cuda' and extra == 'extra-4-idit-mps') or (sys_platform == 'emscripten' and extra == 'extra-4-idit-cuda' and extra == 'extra-4-idit-mps') or (sys_platform == 'win32' and extra == 'extra-4-idit-cuda' and extra == 'extra-4-idit-mps') or (extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-cuda') or (extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-mps')" },
-    { name = "torch", version = "2.11.0+cu128", source = { registry = "https://download.pytorch.org/whl/cu128" }, marker = "extra == 'extra-4-idit-cuda' or (extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-mps')" },
+    { name = "torch", version = "2.11.0", source = { registry = "https://pypi.org/simple" }, marker = "(sys_platform != 'darwin' and extra != 'extra-4-idit-cuda') or (sys_platform == 'darwin' and extra == 'extra-4-idit-cuda') or extra == 'extra-4-idit-cpu' or (extra == 'extra-4-idit-cuda' and extra == 'extra-4-idit-mps') or (extra != 'extra-4-idit-cuda' and extra != 'extra-4-idit-mps')" },
+    { name = "torch", version = "2.11.0+cu128", source = { registry = "https://download.pytorch.org/whl/cu128" }, marker = "(sys_platform != 'darwin' and extra == 'extra-4-idit-cuda') or (extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-cuda') or (extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-mps') or (extra == 'extra-4-idit-cuda' and extra == 'extra-4-idit-mps')" },
     { name = "torchvision", version = "0.26.0", source = { registry = "https://download.pytorch.org/whl/cpu" }, marker = "(sys_platform == 'darwin' and extra == 'extra-4-idit-mps') or (extra == 'extra-4-idit-cuda' and extra == 'extra-4-idit-mps') or (extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-cuda') or (extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-mps')" },
-    { name = "torchvision", version = "0.26.0", source = { registry = "https://pypi.org/simple" }, marker = "(sys_platform == 'emscripten' and extra != 'extra-4-idit-cuda') or (sys_platform == 'win32' and extra != 'extra-4-idit-cuda') or extra == 'extra-4-idit-cpu' or (extra != 'extra-4-idit-cuda' and extra != 'extra-4-idit-mps') or (extra == 'extra-4-idit-cuda' and extra == 'extra-4-idit-mps')" },
-    { name = "torchvision", version = "0.26.0+cpu", source = { registry = "https://download.pytorch.org/whl/cpu" }, marker = "(sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'win32' and extra == 'extra-4-idit-mps') or (sys_platform == 'darwin' and extra == 'extra-4-idit-cuda' and extra == 'extra-4-idit-mps') or (sys_platform == 'emscripten' and extra == 'extra-4-idit-cuda' and extra == 'extra-4-idit-mps') or (sys_platform == 'win32' and extra == 'extra-4-idit-cuda' and extra == 'extra-4-idit-mps') or (extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-cuda') or (extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-mps')" },
-    { name = "torchvision", version = "0.26.0+cu128", source = { registry = "https://download.pytorch.org/whl/cu128" }, marker = "extra == 'extra-4-idit-cuda' or (extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-mps')" },
+    { name = "torchvision", version = "0.26.0", source = { registry = "https://pypi.org/simple" }, marker = "(sys_platform != 'darwin' and extra != 'extra-4-idit-cuda') or (sys_platform == 'darwin' and extra == 'extra-4-idit-cuda') or extra == 'extra-4-idit-cpu' or (extra == 'extra-4-idit-cuda' and extra == 'extra-4-idit-mps') or (extra != 'extra-4-idit-cuda' and extra != 'extra-4-idit-mps')" },
+    { name = "torchvision", version = "0.26.0+cu128", source = { registry = "https://download.pytorch.org/whl/cu128" }, marker = "(sys_platform != 'darwin' and extra == 'extra-4-idit-cuda') or (extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-cuda') or (extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-mps') or (extra == 'extra-4-idit-cuda' and extra == 'extra-4-idit-mps')" },
     { name = "tqdm" },
 ]
 
@@ -677,8 +685,10 @@ cpu = [
     { name = "torchvision", version = "0.26.0", source = { registry = "https://pypi.org/simple" } },
 ]
 cuda = [
-    { name = "torch", version = "2.11.0+cu128", source = { registry = "https://download.pytorch.org/whl/cu128" } },
-    { name = "torchvision", version = "0.26.0+cu128", source = { registry = "https://download.pytorch.org/whl/cu128" } },
+    { name = "torch", version = "2.11.0", source = { registry = "https://pypi.org/simple" }, marker = "(sys_platform == 'darwin' and extra == 'extra-4-idit-cuda') or (extra == 'extra-4-idit-cuda' and extra == 'extra-4-idit-mps') or (extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-cuda') or (extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-mps')" },
+    { name = "torch", version = "2.11.0+cu128", source = { registry = "https://download.pytorch.org/whl/cu128" }, marker = "(sys_platform != 'darwin' and extra == 'extra-4-idit-cuda') or (extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-cuda') or (extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-mps') or (extra == 'extra-4-idit-cuda' and extra == 'extra-4-idit-mps')" },
+    { name = "torchvision", version = "0.26.0", source = { registry = "https://pypi.org/simple" }, marker = "(sys_platform == 'darwin' and extra == 'extra-4-idit-cuda') or (extra == 'extra-4-idit-cuda' and extra == 'extra-4-idit-mps') or (extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-cuda') or (extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-mps')" },
+    { name = "torchvision", version = "0.26.0+cu128", source = { registry = "https://download.pytorch.org/whl/cu128" }, marker = "(sys_platform != 'darwin' and extra == 'extra-4-idit-cuda') or (extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-cuda') or (extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-mps') or (extra == 'extra-4-idit-cuda' and extra == 'extra-4-idit-mps')" },
     { name = "triton", marker = "sys_platform != 'darwin' and sys_platform != 'win32'" },
     { name = "triton-windows", marker = "sys_platform == 'win32'" },
 ]
@@ -690,11 +700,9 @@ dev = [
 ]
 mps = [
     { name = "torch", version = "2.11.0", source = { registry = "https://download.pytorch.org/whl/cpu" }, marker = "(sys_platform == 'darwin' and extra == 'extra-4-idit-mps') or (extra == 'extra-4-idit-cuda' and extra == 'extra-4-idit-mps') or (extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-cuda') or (extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-mps')" },
-    { name = "torch", version = "2.11.0", source = { registry = "https://pypi.org/simple" }, marker = "(sys_platform == 'emscripten' and extra == 'extra-4-idit-mps') or (sys_platform == 'win32' and extra == 'extra-4-idit-mps') or (extra == 'extra-4-idit-cuda' and extra == 'extra-4-idit-mps') or (extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-cuda') or (extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-mps')" },
-    { name = "torch", version = "2.11.0+cpu", source = { registry = "https://download.pytorch.org/whl/cpu" }, marker = "(sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'win32' and extra == 'extra-4-idit-mps') or (sys_platform == 'darwin' and extra == 'extra-4-idit-cuda' and extra == 'extra-4-idit-mps') or (sys_platform == 'emscripten' and extra == 'extra-4-idit-cuda' and extra == 'extra-4-idit-mps') or (sys_platform == 'win32' and extra == 'extra-4-idit-cuda' and extra == 'extra-4-idit-mps') or (extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-cuda') or (extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-mps')" },
+    { name = "torch", version = "2.11.0", source = { registry = "https://pypi.org/simple" }, marker = "(sys_platform != 'darwin' and extra == 'extra-4-idit-mps') or (extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-cuda') or (extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-mps') or (extra == 'extra-4-idit-cuda' and extra == 'extra-4-idit-mps')" },
     { name = "torchvision", version = "0.26.0", source = { registry = "https://download.pytorch.org/whl/cpu" }, marker = "(sys_platform == 'darwin' and extra == 'extra-4-idit-mps') or (extra == 'extra-4-idit-cuda' and extra == 'extra-4-idit-mps') or (extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-cuda') or (extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-mps')" },
-    { name = "torchvision", version = "0.26.0", source = { registry = "https://pypi.org/simple" }, marker = "(sys_platform == 'emscripten' and extra == 'extra-4-idit-mps') or (sys_platform == 'win32' and extra == 'extra-4-idit-mps') or (extra == 'extra-4-idit-cuda' and extra == 'extra-4-idit-mps') or (extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-cuda') or (extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-mps')" },
-    { name = "torchvision", version = "0.26.0+cpu", source = { registry = "https://download.pytorch.org/whl/cpu" }, marker = "(sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'win32' and extra == 'extra-4-idit-mps') or (sys_platform == 'darwin' and extra == 'extra-4-idit-cuda' and extra == 'extra-4-idit-mps') or (sys_platform == 'emscripten' and extra == 'extra-4-idit-cuda' and extra == 'extra-4-idit-mps') or (sys_platform == 'win32' and extra == 'extra-4-idit-cuda' and extra == 'extra-4-idit-mps') or (extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-cuda') or (extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-mps')" },
+    { name = "torchvision", version = "0.26.0", source = { registry = "https://pypi.org/simple" }, marker = "(sys_platform != 'darwin' and extra == 'extra-4-idit-mps') or (extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-cuda') or (extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-mps') or (extra == 'extra-4-idit-cuda' and extra == 'extra-4-idit-mps')" },
 ]
 
 [package.dev-dependencies]
@@ -713,6 +721,7 @@ requires-dist = [
     { name = "einops", specifier = ">=0.8.2" },
     { name = "huggingface-hub", specifier = ">=1.8.0" },
     { name = "numpy", specifier = ">=2.4.3" },
+    { name = "pillow", specifier = ">=12.1.1" },
     { name = "pydantic", specifier = ">=2.12.5" },
     { name = "pydantic-settings", specifier = ">=2.13.1" },
     { name = "pyright", specifier = ">=1.1.408" },
@@ -721,6 +730,7 @@ requires-dist = [
     { name = "ruff", specifier = ">=0.15.8" },
     { name = "ruff", marker = "extra == 'dev'", specifier = ">=0.15.8" },
     { name = "safetensors", specifier = ">=0.7.0" },
+    { name = "sympy", specifier = ">=1.14.0" },
     { name = "torch", specifier = ">=2.11.0" },
     { name = "torch", marker = "sys_platform == 'darwin' and extra == 'cuda'" },
     { name = "torch", marker = "sys_platform == 'darwin' and extra == 'mps'", index = "https://download.pytorch.org/whl/cpu", conflict = { package = "idit", extra = "mps" } },
@@ -1123,7 +1133,7 @@ name = "nvidia-cudnn-cu13"
 version = "9.19.0.56"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "nvidia-cublas", marker = "(sys_platform != 'emscripten' and sys_platform != 'win32' and extra == 'extra-4-idit-cpu') or (sys_platform != 'emscripten' and sys_platform != 'win32' and extra != 'extra-4-idit-cuda' and extra != 'extra-4-idit-mps') or (sys_platform == 'emscripten' and extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-cuda') or (sys_platform == 'emscripten' and extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-mps') or (sys_platform == 'win32' and extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-cuda') or (sys_platform == 'win32' and extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-mps') or (extra != 'extra-4-idit-cpu' and extra == 'extra-4-idit-cuda' and extra == 'extra-4-idit-mps')" },
+    { name = "nvidia-cublas", marker = "(sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'win32' and extra != 'extra-4-idit-cuda') or (sys_platform != 'emscripten' and sys_platform != 'win32' and extra == 'extra-4-idit-cpu') or (sys_platform == 'darwin' and extra == 'extra-4-idit-cpu') or (sys_platform == 'darwin' and extra != 'extra-4-idit-cuda' and extra != 'extra-4-idit-mps') or (sys_platform == 'emscripten' and extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-cuda') or (sys_platform == 'emscripten' and extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-mps') or (sys_platform == 'win32' and extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-cuda') or (sys_platform == 'win32' and extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-mps') or (extra != 'extra-4-idit-cpu' and extra == 'extra-4-idit-cuda' and extra == 'extra-4-idit-mps')" },
 ]
 wheels = [
     { url = "https://files.pythonhosted.org/packages/f1/84/26025437c1e6b61a707442184fa0c03d083b661adf3a3eecfd6d21677740/nvidia_cudnn_cu13-9.19.0.56-py3-none-manylinux_2_27_aarch64.whl", hash = "sha256:6ed29ffaee1176c612daf442e4dd6cfeb6a0caa43ddcbeb59da94953030b1be4", size = 433781201, upload-time = "2026-02-03T20:40:53.805Z" },
@@ -1136,7 +1146,7 @@ name = "nvidia-cufft"
 version = "12.0.0.61"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "nvidia-nvjitlink", marker = "(sys_platform != 'emscripten' and sys_platform != 'win32' and extra == 'extra-4-idit-cpu') or (sys_platform != 'emscripten' and sys_platform != 'win32' and extra != 'extra-4-idit-cuda' and extra != 'extra-4-idit-mps') or (sys_platform == 'emscripten' and extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-cuda') or (sys_platform == 'emscripten' and extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-mps') or (sys_platform == 'win32' and extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-cuda') or (sys_platform == 'win32' and extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-mps') or (extra != 'extra-4-idit-cpu' and extra == 'extra-4-idit-cuda' and extra == 'extra-4-idit-mps')" },
+    { name = "nvidia-nvjitlink", marker = "(sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'win32' and extra != 'extra-4-idit-cuda') or (sys_platform != 'emscripten' and sys_platform != 'win32' and extra == 'extra-4-idit-cpu') or (sys_platform == 'darwin' and extra == 'extra-4-idit-cpu') or (sys_platform == 'darwin' and extra != 'extra-4-idit-cuda' and extra != 'extra-4-idit-mps') or (sys_platform == 'emscripten' and extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-cuda') or (sys_platform == 'emscripten' and extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-mps') or (sys_platform == 'win32' and extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-cuda') or (sys_platform == 'win32' and extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-mps') or (extra != 'extra-4-idit-cpu' and extra == 'extra-4-idit-cuda' and extra == 'extra-4-idit-mps')" },
 ]
 wheels = [
     { url = "https://files.pythonhosted.org/packages/8b/ae/f417a75c0259e85c1d2f83ca4e960289a5f814ed0cea74d18c353d3e989d/nvidia_cufft-12.0.0.61-py3-none-manylinux2014_aarch64.manylinux_2_17_aarch64.whl", hash = "sha256:2708c852ef8cd89d1d2068bdbece0aa188813a0c934db3779b9b1faa8442e5f5", size = 214053554, upload-time = "2025-09-04T08:31:38.196Z" },
@@ -1200,9 +1210,9 @@ name = "nvidia-cusolver"
 version = "12.0.4.66"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "nvidia-cublas", marker = "(sys_platform != 'emscripten' and sys_platform != 'win32' and extra == 'extra-4-idit-cpu') or (sys_platform != 'emscripten' and sys_platform != 'win32' and extra != 'extra-4-idit-cuda' and extra != 'extra-4-idit-mps') or (sys_platform == 'emscripten' and extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-cuda') or (sys_platform == 'emscripten' and extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-mps') or (sys_platform == 'win32' and extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-cuda') or (sys_platform == 'win32' and extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-mps') or (extra != 'extra-4-idit-cpu' and extra == 'extra-4-idit-cuda' and extra == 'extra-4-idit-mps')" },
-    { name = "nvidia-cusparse", marker = "(sys_platform != 'emscripten' and sys_platform != 'win32' and extra == 'extra-4-idit-cpu') or (sys_platform != 'emscripten' and sys_platform != 'win32' and extra != 'extra-4-idit-cuda' and extra != 'extra-4-idit-mps') or (sys_platform == 'emscripten' and extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-cuda') or (sys_platform == 'emscripten' and extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-mps') or (sys_platform == 'win32' and extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-cuda') or (sys_platform == 'win32' and extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-mps') or (extra != 'extra-4-idit-cpu' and extra == 'extra-4-idit-cuda' and extra == 'extra-4-idit-mps')" },
-    { name = "nvidia-nvjitlink", marker = "(sys_platform != 'emscripten' and sys_platform != 'win32' and extra == 'extra-4-idit-cpu') or (sys_platform != 'emscripten' and sys_platform != 'win32' and extra != 'extra-4-idit-cuda' and extra != 'extra-4-idit-mps') or (sys_platform == 'emscripten' and extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-cuda') or (sys_platform == 'emscripten' and extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-mps') or (sys_platform == 'win32' and extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-cuda') or (sys_platform == 'win32' and extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-mps') or (extra != 'extra-4-idit-cpu' and extra == 'extra-4-idit-cuda' and extra == 'extra-4-idit-mps')" },
+    { name = "nvidia-cublas", marker = "(sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'win32' and extra != 'extra-4-idit-cuda') or (sys_platform != 'emscripten' and sys_platform != 'win32' and extra == 'extra-4-idit-cpu') or (sys_platform == 'darwin' and extra == 'extra-4-idit-cpu') or (sys_platform == 'darwin' and extra != 'extra-4-idit-cuda' and extra != 'extra-4-idit-mps') or (sys_platform == 'emscripten' and extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-cuda') or (sys_platform == 'emscripten' and extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-mps') or (sys_platform == 'win32' and extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-cuda') or (sys_platform == 'win32' and extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-mps') or (extra != 'extra-4-idit-cpu' and extra == 'extra-4-idit-cuda' and extra == 'extra-4-idit-mps')" },
+    { name = "nvidia-cusparse", marker = "(sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'win32' and extra != 'extra-4-idit-cuda') or (sys_platform != 'emscripten' and sys_platform != 'win32' and extra == 'extra-4-idit-cpu') or (sys_platform == 'darwin' and extra == 'extra-4-idit-cpu') or (sys_platform == 'darwin' and extra != 'extra-4-idit-cuda' and extra != 'extra-4-idit-mps') or (sys_platform == 'emscripten' and extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-cuda') or (sys_platform == 'emscripten' and extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-mps') or (sys_platform == 'win32' and extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-cuda') or (sys_platform == 'win32' and extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-mps') or (extra != 'extra-4-idit-cpu' and extra == 'extra-4-idit-cuda' and extra == 'extra-4-idit-mps')" },
+    { name = "nvidia-nvjitlink", marker = "(sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'win32' and extra != 'extra-4-idit-cuda') or (sys_platform != 'emscripten' and sys_platform != 'win32' and extra == 'extra-4-idit-cpu') or (sys_platform == 'darwin' and extra == 'extra-4-idit-cpu') or (sys_platform == 'darwin' and extra != 'extra-4-idit-cuda' and extra != 'extra-4-idit-mps') or (sys_platform == 'emscripten' and extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-cuda') or (sys_platform == 'emscripten' and extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-mps') or (sys_platform == 'win32' and extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-cuda') or (sys_platform == 'win32' and extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-mps') or (extra != 'extra-4-idit-cpu' and extra == 'extra-4-idit-cuda' and extra == 'extra-4-idit-mps')" },
 ]
 wheels = [
     { url = "https://files.pythonhosted.org/packages/c8/c3/b30c9e935fc01e3da443ec0116ed1b2a009bb867f5324d3f2d7e533e776b/nvidia_cusolver-12.0.4.66-py3-none-manylinux_2_27_aarch64.whl", hash = "sha256:02c2457eaa9e39de20f880f4bd8820e6a1cfb9f9a34f820eb12a155aa5bc92d2", size = 223467760, upload-time = "2025-09-04T08:33:04.222Z" },
@@ -1230,7 +1240,7 @@ name = "nvidia-cusparse"
 version = "12.6.3.3"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "nvidia-nvjitlink", marker = "(sys_platform != 'emscripten' and sys_platform != 'win32' and extra == 'extra-4-idit-cpu') or (sys_platform != 'emscripten' and sys_platform != 'win32' and extra != 'extra-4-idit-cuda' and extra != 'extra-4-idit-mps') or (sys_platform == 'emscripten' and extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-cuda') or (sys_platform == 'emscripten' and extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-mps') or (sys_platform == 'win32' and extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-cuda') or (sys_platform == 'win32' and extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-mps') or (extra != 'extra-4-idit-cpu' and extra == 'extra-4-idit-cuda' and extra == 'extra-4-idit-mps')" },
+    { name = "nvidia-nvjitlink", marker = "(sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'win32' and extra != 'extra-4-idit-cuda') or (sys_platform != 'emscripten' and sys_platform != 'win32' and extra == 'extra-4-idit-cpu') or (sys_platform == 'darwin' and extra == 'extra-4-idit-cpu') or (sys_platform == 'darwin' and extra != 'extra-4-idit-cuda' and extra != 'extra-4-idit-mps') or (sys_platform == 'emscripten' and extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-cuda') or (sys_platform == 'emscripten' and extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-mps') or (sys_platform == 'win32' and extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-cuda') or (sys_platform == 'win32' and extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-mps') or (extra != 'extra-4-idit-cpu' and extra == 'extra-4-idit-cuda' and extra == 'extra-4-idit-mps')" },
 ]
 wheels = [
     { url = "https://files.pythonhosted.org/packages/f8/94/5c26f33738ae35276672f12615a64bd008ed5be6d1ebcb23579285d960a9/nvidia_cusparse-12.6.3.3-py3-none-manylinux2014_aarch64.manylinux_2_17_aarch64.whl", hash = "sha256:80bcc4662f23f1054ee334a15c72b8940402975e0eab63178fc7e670aa59472c", size = 162155568, upload-time = "2025-09-04T08:33:42.864Z" },
@@ -1892,28 +1902,42 @@ name = "torch"
 version = "2.11.0"
 source = { registry = "https://pypi.org/simple" }
 resolution-markers = [
-    "python_full_version >= '3.14' and sys_platform == 'win32'",
-    "python_full_version >= '3.14' and sys_platform == 'emscripten'",
-    "python_full_version >= '3.14' and sys_platform != 'emscripten' and sys_platform != 'win32'",
-    "python_full_version < '3.14' and sys_platform == 'win32'",
-    "python_full_version < '3.14' and sys_platform == 'emscripten'",
-    "python_full_version < '3.14' and sys_platform != 'emscripten' and sys_platform != 'win32'",
+    "python_full_version >= '3.14' and sys_platform == 'win32' and extra != 'extra-4-idit-cpu' and extra != 'extra-4-idit-cuda' and extra == 'extra-4-idit-mps'",
+    "python_full_version >= '3.14' and sys_platform == 'win32' and extra == 'extra-4-idit-cpu' and extra != 'extra-4-idit-cuda' and extra != 'extra-4-idit-mps'",
+    "python_full_version >= '3.14' and sys_platform == 'win32' and extra != 'extra-4-idit-cpu' and extra != 'extra-4-idit-cuda' and extra != 'extra-4-idit-mps'",
+    "python_full_version >= '3.14' and sys_platform == 'emscripten' and extra != 'extra-4-idit-cpu' and extra != 'extra-4-idit-cuda' and extra == 'extra-4-idit-mps'",
+    "python_full_version >= '3.14' and sys_platform == 'emscripten' and extra == 'extra-4-idit-cpu' and extra != 'extra-4-idit-cuda' and extra != 'extra-4-idit-mps'",
+    "python_full_version >= '3.14' and sys_platform == 'emscripten' and extra != 'extra-4-idit-cpu' and extra != 'extra-4-idit-cuda' and extra != 'extra-4-idit-mps'",
+    "python_full_version >= '3.14' and sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'win32' and extra != 'extra-4-idit-cpu' and extra != 'extra-4-idit-cuda' and extra == 'extra-4-idit-mps'",
+    "python_full_version >= '3.14' and sys_platform == 'darwin' and extra != 'extra-4-idit-cpu' and extra == 'extra-4-idit-cuda' and extra != 'extra-4-idit-mps'",
+    "python_full_version >= '3.14' and sys_platform != 'emscripten' and sys_platform != 'win32' and extra == 'extra-4-idit-cpu' and extra != 'extra-4-idit-cuda' and extra != 'extra-4-idit-mps'",
+    "python_full_version >= '3.14' and sys_platform != 'emscripten' and sys_platform != 'win32' and extra != 'extra-4-idit-cpu' and extra != 'extra-4-idit-cuda' and extra != 'extra-4-idit-mps'",
+    "python_full_version < '3.14' and sys_platform == 'win32' and extra != 'extra-4-idit-cpu' and extra != 'extra-4-idit-cuda' and extra == 'extra-4-idit-mps'",
+    "python_full_version < '3.14' and sys_platform == 'win32' and extra == 'extra-4-idit-cpu' and extra != 'extra-4-idit-cuda' and extra != 'extra-4-idit-mps'",
+    "python_full_version < '3.14' and sys_platform == 'win32' and extra != 'extra-4-idit-cpu' and extra != 'extra-4-idit-cuda' and extra != 'extra-4-idit-mps'",
+    "python_full_version < '3.14' and sys_platform == 'emscripten' and extra != 'extra-4-idit-cpu' and extra != 'extra-4-idit-cuda' and extra == 'extra-4-idit-mps'",
+    "python_full_version < '3.14' and sys_platform == 'emscripten' and extra == 'extra-4-idit-cpu' and extra != 'extra-4-idit-cuda' and extra != 'extra-4-idit-mps'",
+    "python_full_version < '3.14' and sys_platform == 'emscripten' and extra != 'extra-4-idit-cpu' and extra != 'extra-4-idit-cuda' and extra != 'extra-4-idit-mps'",
+    "python_full_version < '3.14' and sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'win32' and extra != 'extra-4-idit-cpu' and extra != 'extra-4-idit-cuda' and extra == 'extra-4-idit-mps'",
+    "python_full_version < '3.14' and sys_platform == 'darwin' and extra != 'extra-4-idit-cpu' and extra == 'extra-4-idit-cuda' and extra != 'extra-4-idit-mps'",
+    "python_full_version < '3.14' and sys_platform != 'emscripten' and sys_platform != 'win32' and extra == 'extra-4-idit-cpu' and extra != 'extra-4-idit-cuda' and extra != 'extra-4-idit-mps'",
+    "python_full_version < '3.14' and sys_platform != 'emscripten' and sys_platform != 'win32' and extra != 'extra-4-idit-cpu' and extra != 'extra-4-idit-cuda' and extra != 'extra-4-idit-mps'",
 ]
 dependencies = [
-    { name = "cuda-bindings", version = "13.2.0", source = { registry = "https://pypi.org/simple" }, marker = "(sys_platform == 'linux' and extra == 'extra-4-idit-cpu') or (sys_platform == 'linux' and extra != 'extra-4-idit-cuda' and extra != 'extra-4-idit-mps') or (extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-cuda') or (extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-mps') or (extra == 'extra-4-idit-cuda' and extra == 'extra-4-idit-mps')" },
-    { name = "cuda-toolkit", version = "13.0.2", source = { registry = "https://pypi.org/simple" }, extra = ["cublas", "cudart", "cufft", "cufile", "cupti", "curand", "cusolver", "cusparse", "nvjitlink", "nvrtc", "nvtx"], marker = "(sys_platform == 'linux' and extra == 'extra-4-idit-cpu') or (sys_platform == 'linux' and extra != 'extra-4-idit-cuda' and extra != 'extra-4-idit-mps') or (extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-cuda') or (extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-mps') or (extra == 'extra-4-idit-cuda' and extra == 'extra-4-idit-mps')" },
-    { name = "filelock", marker = "sys_platform == 'emscripten' or sys_platform == 'win32'" },
-    { name = "fsspec", marker = "sys_platform == 'emscripten' or sys_platform == 'win32'" },
-    { name = "jinja2", marker = "sys_platform == 'emscripten' or sys_platform == 'win32'" },
-    { name = "networkx", marker = "sys_platform == 'emscripten' or sys_platform == 'win32'" },
-    { name = "nvidia-cudnn-cu13", marker = "(sys_platform == 'linux' and extra == 'extra-4-idit-cpu') or (sys_platform == 'linux' and extra != 'extra-4-idit-cuda' and extra != 'extra-4-idit-mps') or (extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-cuda') or (extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-mps') or (extra == 'extra-4-idit-cuda' and extra == 'extra-4-idit-mps')" },
-    { name = "nvidia-cusparselt-cu13", marker = "(sys_platform == 'linux' and extra == 'extra-4-idit-cpu') or (sys_platform == 'linux' and extra != 'extra-4-idit-cuda' and extra != 'extra-4-idit-mps') or (extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-cuda') or (extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-mps') or (extra == 'extra-4-idit-cuda' and extra == 'extra-4-idit-mps')" },
-    { name = "nvidia-nccl-cu13", marker = "(sys_platform == 'linux' and extra == 'extra-4-idit-cpu') or (sys_platform == 'linux' and extra != 'extra-4-idit-cuda' and extra != 'extra-4-idit-mps') or (extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-cuda') or (extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-mps') or (extra == 'extra-4-idit-cuda' and extra == 'extra-4-idit-mps')" },
-    { name = "nvidia-nvshmem-cu13", marker = "(sys_platform == 'linux' and extra == 'extra-4-idit-cpu') or (sys_platform == 'linux' and extra != 'extra-4-idit-cuda' and extra != 'extra-4-idit-mps') or (extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-cuda') or (extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-mps') or (extra == 'extra-4-idit-cuda' and extra == 'extra-4-idit-mps')" },
-    { name = "setuptools", marker = "sys_platform == 'emscripten' or sys_platform == 'win32'" },
-    { name = "sympy", marker = "sys_platform == 'emscripten' or sys_platform == 'win32'" },
-    { name = "triton", marker = "(sys_platform == 'linux' and extra == 'extra-4-idit-cpu') or (sys_platform == 'linux' and extra != 'extra-4-idit-cuda' and extra != 'extra-4-idit-mps') or (extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-cuda') or (extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-mps') or (extra == 'extra-4-idit-cuda' and extra == 'extra-4-idit-mps')" },
-    { name = "typing-extensions", marker = "sys_platform == 'emscripten' or sys_platform == 'win32'" },
+    { name = "cuda-bindings", version = "13.2.0", source = { registry = "https://pypi.org/simple" }, marker = "(sys_platform == 'linux' and extra == 'extra-4-idit-cpu') or (sys_platform == 'linux' and extra != 'extra-4-idit-cuda') or (extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-cuda') or (extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-mps') or (extra == 'extra-4-idit-cuda' and extra == 'extra-4-idit-mps')" },
+    { name = "cuda-toolkit", version = "13.0.2", source = { registry = "https://pypi.org/simple" }, extra = ["cublas", "cudart", "cufft", "cufile", "cupti", "curand", "cusolver", "cusparse", "nvjitlink", "nvrtc", "nvtx"], marker = "(sys_platform == 'linux' and extra == 'extra-4-idit-cpu') or (sys_platform == 'linux' and extra != 'extra-4-idit-cuda') or (extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-cuda') or (extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-mps') or (extra == 'extra-4-idit-cuda' and extra == 'extra-4-idit-mps')" },
+    { name = "filelock", marker = "sys_platform != 'darwin'" },
+    { name = "fsspec", marker = "sys_platform != 'darwin'" },
+    { name = "jinja2", marker = "sys_platform != 'darwin'" },
+    { name = "networkx", marker = "sys_platform != 'darwin'" },
+    { name = "nvidia-cudnn-cu13", marker = "(sys_platform == 'linux' and extra == 'extra-4-idit-cpu') or (sys_platform == 'linux' and extra != 'extra-4-idit-cuda') or (extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-cuda') or (extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-mps') or (extra == 'extra-4-idit-cuda' and extra == 'extra-4-idit-mps')" },
+    { name = "nvidia-cusparselt-cu13", marker = "(sys_platform == 'linux' and extra == 'extra-4-idit-cpu') or (sys_platform == 'linux' and extra != 'extra-4-idit-cuda') or (extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-cuda') or (extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-mps') or (extra == 'extra-4-idit-cuda' and extra == 'extra-4-idit-mps')" },
+    { name = "nvidia-nccl-cu13", marker = "(sys_platform == 'linux' and extra == 'extra-4-idit-cpu') or (sys_platform == 'linux' and extra != 'extra-4-idit-cuda') or (extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-cuda') or (extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-mps') or (extra == 'extra-4-idit-cuda' and extra == 'extra-4-idit-mps')" },
+    { name = "nvidia-nvshmem-cu13", marker = "(sys_platform == 'linux' and extra == 'extra-4-idit-cpu') or (sys_platform == 'linux' and extra != 'extra-4-idit-cuda') or (extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-cuda') or (extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-mps') or (extra == 'extra-4-idit-cuda' and extra == 'extra-4-idit-mps')" },
+    { name = "setuptools", marker = "sys_platform != 'darwin'" },
+    { name = "sympy", marker = "sys_platform != 'darwin'" },
+    { name = "triton", marker = "(sys_platform == 'linux' and extra == 'extra-4-idit-cpu') or (sys_platform == 'linux' and extra != 'extra-4-idit-cuda') or (extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-cuda') or (extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-mps') or (extra == 'extra-4-idit-cuda' and extra == 'extra-4-idit-mps')" },
+    { name = "typing-extensions", marker = "sys_platform != 'darwin'" },
 ]
 wheels = [
     { url = "https://files.pythonhosted.org/packages/87/89/5ea6722763acee56b045435fb84258db7375c48165ec8be7880ab2b281c5/torch-2.11.0-cp313-cp313-macosx_11_0_arm64.whl", hash = "sha256:1e6debd97ccd3205bbb37eb806a9d8219e1139d15419982c09e23ef7d4369d18", size = 80606801, upload-time = "2026-03-23T18:10:18.649Z" },
@@ -1936,69 +1960,31 @@ wheels = [
 
 [[package]]
 name = "torch"
-version = "2.11.0+cpu"
-source = { registry = "https://download.pytorch.org/whl/cpu" }
-resolution-markers = [
-    "python_full_version >= '3.14' and sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'win32'",
-    "python_full_version < '3.14' and sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'win32'",
-]
-dependencies = [
-    { name = "filelock", marker = "(sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'win32' and extra == 'extra-4-idit-mps') or (sys_platform == 'darwin' and extra == 'extra-4-idit-cuda' and extra == 'extra-4-idit-mps') or (sys_platform == 'emscripten' and extra == 'extra-4-idit-cuda' and extra == 'extra-4-idit-mps') or (sys_platform == 'win32' and extra == 'extra-4-idit-cuda' and extra == 'extra-4-idit-mps') or (extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-cuda') or (extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-mps')" },
-    { name = "fsspec", marker = "(sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'win32' and extra == 'extra-4-idit-mps') or (sys_platform == 'darwin' and extra == 'extra-4-idit-cuda' and extra == 'extra-4-idit-mps') or (sys_platform == 'emscripten' and extra == 'extra-4-idit-cuda' and extra == 'extra-4-idit-mps') or (sys_platform == 'win32' and extra == 'extra-4-idit-cuda' and extra == 'extra-4-idit-mps') or (extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-cuda') or (extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-mps')" },
-    { name = "jinja2", marker = "(sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'win32' and extra == 'extra-4-idit-mps') or (sys_platform == 'darwin' and extra == 'extra-4-idit-cuda' and extra == 'extra-4-idit-mps') or (sys_platform == 'emscripten' and extra == 'extra-4-idit-cuda' and extra == 'extra-4-idit-mps') or (sys_platform == 'win32' and extra == 'extra-4-idit-cuda' and extra == 'extra-4-idit-mps') or (extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-cuda') or (extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-mps')" },
-    { name = "networkx", marker = "(sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'win32' and extra == 'extra-4-idit-mps') or (sys_platform == 'darwin' and extra == 'extra-4-idit-cuda' and extra == 'extra-4-idit-mps') or (sys_platform == 'emscripten' and extra == 'extra-4-idit-cuda' and extra == 'extra-4-idit-mps') or (sys_platform == 'win32' and extra == 'extra-4-idit-cuda' and extra == 'extra-4-idit-mps') or (extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-cuda') or (extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-mps')" },
-    { name = "setuptools", marker = "(sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'win32' and extra == 'extra-4-idit-mps') or (sys_platform == 'darwin' and extra == 'extra-4-idit-cuda' and extra == 'extra-4-idit-mps') or (sys_platform == 'emscripten' and extra == 'extra-4-idit-cuda' and extra == 'extra-4-idit-mps') or (sys_platform == 'win32' and extra == 'extra-4-idit-cuda' and extra == 'extra-4-idit-mps') or (extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-cuda') or (extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-mps')" },
-    { name = "sympy", marker = "(sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'win32' and extra == 'extra-4-idit-mps') or (sys_platform == 'darwin' and extra == 'extra-4-idit-cuda' and extra == 'extra-4-idit-mps') or (sys_platform == 'emscripten' and extra == 'extra-4-idit-cuda' and extra == 'extra-4-idit-mps') or (sys_platform == 'win32' and extra == 'extra-4-idit-cuda' and extra == 'extra-4-idit-mps') or (extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-cuda') or (extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-mps')" },
-    { name = "typing-extensions", marker = "(sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'win32' and extra == 'extra-4-idit-mps') or (sys_platform == 'darwin' and extra == 'extra-4-idit-cuda' and extra == 'extra-4-idit-mps') or (sys_platform == 'emscripten' and extra == 'extra-4-idit-cuda' and extra == 'extra-4-idit-mps') or (sys_platform == 'win32' and extra == 'extra-4-idit-cuda' and extra == 'extra-4-idit-mps') or (extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-cuda') or (extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-mps')" },
-]
-wheels = [
-    { url = "https://download.pytorch.org/whl/cpu/torch-2.11.0%2Bcpu-cp313-cp313-linux_s390x.whl" },
-    { url = "https://download.pytorch.org/whl/cpu/torch-2.11.0%2Bcpu-cp313-cp313-manylinux_2_28_aarch64.whl" },
-    { url = "https://download.pytorch.org/whl/cpu/torch-2.11.0%2Bcpu-cp313-cp313-manylinux_2_28_x86_64.whl" },
-    { url = "https://download.pytorch.org/whl/cpu/torch-2.11.0%2Bcpu-cp313-cp313-win_amd64.whl" },
-    { url = "https://download.pytorch.org/whl/cpu/torch-2.11.0%2Bcpu-cp313-cp313t-linux_s390x.whl" },
-    { url = "https://download.pytorch.org/whl/cpu/torch-2.11.0%2Bcpu-cp313-cp313t-manylinux_2_28_aarch64.whl" },
-    { url = "https://download.pytorch.org/whl/cpu/torch-2.11.0%2Bcpu-cp313-cp313t-manylinux_2_28_x86_64.whl" },
-    { url = "https://download.pytorch.org/whl/cpu/torch-2.11.0%2Bcpu-cp313-cp313t-win_amd64.whl" },
-    { url = "https://download.pytorch.org/whl/cpu/torch-2.11.0%2Bcpu-cp314-cp314-linux_s390x.whl" },
-    { url = "https://download.pytorch.org/whl/cpu/torch-2.11.0%2Bcpu-cp314-cp314-manylinux_2_28_aarch64.whl" },
-    { url = "https://download.pytorch.org/whl/cpu/torch-2.11.0%2Bcpu-cp314-cp314-manylinux_2_28_x86_64.whl" },
-    { url = "https://download.pytorch.org/whl/cpu/torch-2.11.0%2Bcpu-cp314-cp314-win_amd64.whl" },
-    { url = "https://download.pytorch.org/whl/cpu/torch-2.11.0%2Bcpu-cp314-cp314t-linux_s390x.whl" },
-    { url = "https://download.pytorch.org/whl/cpu/torch-2.11.0%2Bcpu-cp314-cp314t-manylinux_2_28_aarch64.whl" },
-    { url = "https://download.pytorch.org/whl/cpu/torch-2.11.0%2Bcpu-cp314-cp314t-manylinux_2_28_x86_64.whl" },
-    { url = "https://download.pytorch.org/whl/cpu/torch-2.11.0%2Bcpu-cp314-cp314t-win_amd64.whl" },
-]
-
-[[package]]
-name = "torch"
 version = "2.11.0+cu128"
 source = { registry = "https://download.pytorch.org/whl/cu128" }
 resolution-markers = [
     "python_full_version >= '3.14' and sys_platform == 'win32'",
     "python_full_version >= '3.14' and sys_platform == 'emscripten'",
     "python_full_version >= '3.14' and sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'win32'",
-    "python_full_version >= '3.14' and sys_platform == 'darwin'",
     "python_full_version < '3.14' and sys_platform == 'win32'",
     "python_full_version < '3.14' and sys_platform == 'emscripten'",
     "python_full_version < '3.14' and sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'win32'",
-    "python_full_version < '3.14' and sys_platform == 'darwin'",
 ]
 dependencies = [
     { name = "cuda-bindings", version = "12.9.6", source = { registry = "https://pypi.org/simple" }, marker = "(sys_platform == 'linux' and extra == 'extra-4-idit-cuda') or (extra == 'extra-4-idit-cuda' and extra == 'extra-4-idit-mps') or (extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-cuda') or (extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-mps')" },
     { name = "cuda-toolkit", version = "12.8.1", source = { registry = "https://pypi.org/simple" }, extra = ["cublas", "cudart", "cufft", "cufile", "cupti", "curand", "cusolver", "cusparse", "nvjitlink", "nvrtc", "nvtx"], marker = "(sys_platform == 'linux' and extra == 'extra-4-idit-cuda') or (extra == 'extra-4-idit-cuda' and extra == 'extra-4-idit-mps') or (extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-cuda') or (extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-mps')" },
-    { name = "filelock", marker = "extra == 'extra-4-idit-cuda' or (extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-mps')" },
-    { name = "fsspec", marker = "extra == 'extra-4-idit-cuda' or (extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-mps')" },
-    { name = "jinja2", marker = "extra == 'extra-4-idit-cuda' or (extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-mps')" },
-    { name = "networkx", marker = "extra == 'extra-4-idit-cuda' or (extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-mps')" },
+    { name = "filelock", marker = "(sys_platform != 'darwin' and extra == 'extra-4-idit-cuda') or (extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-cuda') or (extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-mps') or (extra == 'extra-4-idit-cuda' and extra == 'extra-4-idit-mps')" },
+    { name = "fsspec", marker = "(sys_platform != 'darwin' and extra == 'extra-4-idit-cuda') or (extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-cuda') or (extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-mps') or (extra == 'extra-4-idit-cuda' and extra == 'extra-4-idit-mps')" },
+    { name = "jinja2", marker = "(sys_platform != 'darwin' and extra == 'extra-4-idit-cuda') or (extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-cuda') or (extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-mps') or (extra == 'extra-4-idit-cuda' and extra == 'extra-4-idit-mps')" },
+    { name = "networkx", marker = "(sys_platform != 'darwin' and extra == 'extra-4-idit-cuda') or (extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-cuda') or (extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-mps') or (extra == 'extra-4-idit-cuda' and extra == 'extra-4-idit-mps')" },
     { name = "nvidia-cudnn-cu12", marker = "(sys_platform == 'linux' and extra == 'extra-4-idit-cuda') or (extra == 'extra-4-idit-cuda' and extra == 'extra-4-idit-mps') or (extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-cuda') or (extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-mps')" },
     { name = "nvidia-cusparselt-cu12", marker = "(sys_platform == 'linux' and extra == 'extra-4-idit-cuda') or (extra == 'extra-4-idit-cuda' and extra == 'extra-4-idit-mps') or (extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-cuda') or (extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-mps')" },
     { name = "nvidia-nccl-cu12", marker = "(sys_platform == 'linux' and extra == 'extra-4-idit-cuda') or (extra == 'extra-4-idit-cuda' and extra == 'extra-4-idit-mps') or (extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-cuda') or (extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-mps')" },
     { name = "nvidia-nvshmem-cu12", marker = "(sys_platform == 'linux' and extra == 'extra-4-idit-cuda') or (extra == 'extra-4-idit-cuda' and extra == 'extra-4-idit-mps') or (extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-cuda') or (extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-mps')" },
-    { name = "setuptools", marker = "extra == 'extra-4-idit-cuda' or (extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-mps')" },
-    { name = "sympy", marker = "extra == 'extra-4-idit-cuda' or (extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-mps')" },
+    { name = "setuptools", marker = "(sys_platform != 'darwin' and extra == 'extra-4-idit-cuda') or (extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-cuda') or (extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-mps') or (extra == 'extra-4-idit-cuda' and extra == 'extra-4-idit-mps')" },
+    { name = "sympy", marker = "(sys_platform != 'darwin' and extra == 'extra-4-idit-cuda') or (extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-cuda') or (extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-mps') or (extra == 'extra-4-idit-cuda' and extra == 'extra-4-idit-mps')" },
     { name = "triton", marker = "(sys_platform == 'linux' and extra == 'extra-4-idit-cuda') or (extra == 'extra-4-idit-cuda' and extra == 'extra-4-idit-mps') or (extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-cuda') or (extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-mps')" },
-    { name = "typing-extensions", marker = "extra == 'extra-4-idit-cuda' or (extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-mps')" },
+    { name = "typing-extensions", marker = "(sys_platform != 'darwin' and extra == 'extra-4-idit-cuda') or (extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-cuda') or (extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-mps') or (extra == 'extra-4-idit-cuda' and extra == 'extra-4-idit-mps')" },
 ]
 wheels = [
     { url = "https://download.pytorch.org/whl/cu128/torch-2.11.0%2Bcu128-cp313-cp313-manylinux_2_28_aarch64.whl" },
@@ -2040,17 +2026,31 @@ name = "torchvision"
 version = "0.26.0"
 source = { registry = "https://pypi.org/simple" }
 resolution-markers = [
-    "python_full_version >= '3.14' and sys_platform == 'win32'",
-    "python_full_version >= '3.14' and sys_platform == 'emscripten'",
-    "python_full_version >= '3.14' and sys_platform != 'emscripten' and sys_platform != 'win32'",
-    "python_full_version < '3.14' and sys_platform == 'win32'",
-    "python_full_version < '3.14' and sys_platform == 'emscripten'",
-    "python_full_version < '3.14' and sys_platform != 'emscripten' and sys_platform != 'win32'",
+    "python_full_version >= '3.14' and sys_platform == 'win32' and extra != 'extra-4-idit-cpu' and extra != 'extra-4-idit-cuda' and extra == 'extra-4-idit-mps'",
+    "python_full_version >= '3.14' and sys_platform == 'win32' and extra == 'extra-4-idit-cpu' and extra != 'extra-4-idit-cuda' and extra != 'extra-4-idit-mps'",
+    "python_full_version >= '3.14' and sys_platform == 'win32' and extra != 'extra-4-idit-cpu' and extra != 'extra-4-idit-cuda' and extra != 'extra-4-idit-mps'",
+    "python_full_version >= '3.14' and sys_platform == 'emscripten' and extra != 'extra-4-idit-cpu' and extra != 'extra-4-idit-cuda' and extra == 'extra-4-idit-mps'",
+    "python_full_version >= '3.14' and sys_platform == 'emscripten' and extra == 'extra-4-idit-cpu' and extra != 'extra-4-idit-cuda' and extra != 'extra-4-idit-mps'",
+    "python_full_version >= '3.14' and sys_platform == 'emscripten' and extra != 'extra-4-idit-cpu' and extra != 'extra-4-idit-cuda' and extra != 'extra-4-idit-mps'",
+    "python_full_version >= '3.14' and sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'win32' and extra != 'extra-4-idit-cpu' and extra != 'extra-4-idit-cuda' and extra == 'extra-4-idit-mps'",
+    "python_full_version >= '3.14' and sys_platform == 'darwin' and extra != 'extra-4-idit-cpu' and extra == 'extra-4-idit-cuda' and extra != 'extra-4-idit-mps'",
+    "python_full_version >= '3.14' and sys_platform != 'emscripten' and sys_platform != 'win32' and extra == 'extra-4-idit-cpu' and extra != 'extra-4-idit-cuda' and extra != 'extra-4-idit-mps'",
+    "python_full_version >= '3.14' and sys_platform != 'emscripten' and sys_platform != 'win32' and extra != 'extra-4-idit-cpu' and extra != 'extra-4-idit-cuda' and extra != 'extra-4-idit-mps'",
+    "python_full_version < '3.14' and sys_platform == 'win32' and extra != 'extra-4-idit-cpu' and extra != 'extra-4-idit-cuda' and extra == 'extra-4-idit-mps'",
+    "python_full_version < '3.14' and sys_platform == 'win32' and extra == 'extra-4-idit-cpu' and extra != 'extra-4-idit-cuda' and extra != 'extra-4-idit-mps'",
+    "python_full_version < '3.14' and sys_platform == 'win32' and extra != 'extra-4-idit-cpu' and extra != 'extra-4-idit-cuda' and extra != 'extra-4-idit-mps'",
+    "python_full_version < '3.14' and sys_platform == 'emscripten' and extra != 'extra-4-idit-cpu' and extra != 'extra-4-idit-cuda' and extra == 'extra-4-idit-mps'",
+    "python_full_version < '3.14' and sys_platform == 'emscripten' and extra == 'extra-4-idit-cpu' and extra != 'extra-4-idit-cuda' and extra != 'extra-4-idit-mps'",
+    "python_full_version < '3.14' and sys_platform == 'emscripten' and extra != 'extra-4-idit-cpu' and extra != 'extra-4-idit-cuda' and extra != 'extra-4-idit-mps'",
+    "python_full_version < '3.14' and sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'win32' and extra != 'extra-4-idit-cpu' and extra != 'extra-4-idit-cuda' and extra == 'extra-4-idit-mps'",
+    "python_full_version < '3.14' and sys_platform == 'darwin' and extra != 'extra-4-idit-cpu' and extra == 'extra-4-idit-cuda' and extra != 'extra-4-idit-mps'",
+    "python_full_version < '3.14' and sys_platform != 'emscripten' and sys_platform != 'win32' and extra == 'extra-4-idit-cpu' and extra != 'extra-4-idit-cuda' and extra != 'extra-4-idit-mps'",
+    "python_full_version < '3.14' and sys_platform != 'emscripten' and sys_platform != 'win32' and extra != 'extra-4-idit-cpu' and extra != 'extra-4-idit-cuda' and extra != 'extra-4-idit-mps'",
 ]
 dependencies = [
-    { name = "numpy", marker = "sys_platform == 'emscripten' or sys_platform == 'win32'" },
-    { name = "pillow", marker = "sys_platform == 'emscripten' or sys_platform == 'win32'" },
-    { name = "torch", version = "2.11.0", source = { registry = "https://pypi.org/simple" }, marker = "sys_platform == 'emscripten' or sys_platform == 'win32'" },
+    { name = "numpy", marker = "sys_platform != 'darwin'" },
+    { name = "pillow", marker = "sys_platform != 'darwin'" },
+    { name = "torch", version = "2.11.0", source = { registry = "https://pypi.org/simple" }, marker = "sys_platform != 'darwin'" },
 ]
 wheels = [
     { url = "https://files.pythonhosted.org/packages/da/80/0762f77f53605d10c9477be39bb47722cc8e383bbbc2531471ce0e396c07/torchvision-0.26.0-cp313-cp313-macosx_12_0_arm64.whl", hash = "sha256:5d63dd43162691258b1b3529b9041bac7d54caa37eae0925f997108268cbf7c4", size = 1860809, upload-time = "2026-03-23T18:12:47.629Z" },
@@ -2073,50 +2073,20 @@ wheels = [
 
 [[package]]
 name = "torchvision"
-version = "0.26.0+cpu"
-source = { registry = "https://download.pytorch.org/whl/cpu" }
-resolution-markers = [
-    "python_full_version >= '3.14' and sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'win32'",
-    "python_full_version < '3.14' and sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'win32'",
-]
-dependencies = [
-    { name = "numpy", marker = "(sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'win32' and extra == 'extra-4-idit-mps') or (sys_platform == 'darwin' and extra == 'extra-4-idit-cuda' and extra == 'extra-4-idit-mps') or (sys_platform == 'emscripten' and extra == 'extra-4-idit-cuda' and extra == 'extra-4-idit-mps') or (sys_platform == 'win32' and extra == 'extra-4-idit-cuda' and extra == 'extra-4-idit-mps') or (extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-cuda') or (extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-mps')" },
-    { name = "pillow", marker = "(sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'win32' and extra == 'extra-4-idit-mps') or (sys_platform == 'darwin' and extra == 'extra-4-idit-cuda' and extra == 'extra-4-idit-mps') or (sys_platform == 'emscripten' and extra == 'extra-4-idit-cuda' and extra == 'extra-4-idit-mps') or (sys_platform == 'win32' and extra == 'extra-4-idit-cuda' and extra == 'extra-4-idit-mps') or (extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-cuda') or (extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-mps')" },
-    { name = "torch", version = "2.11.0+cpu", source = { registry = "https://download.pytorch.org/whl/cpu" }, marker = "(sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'win32' and extra == 'extra-4-idit-mps') or (sys_platform == 'darwin' and extra == 'extra-4-idit-cuda' and extra == 'extra-4-idit-mps') or (sys_platform == 'emscripten' and extra == 'extra-4-idit-cuda' and extra == 'extra-4-idit-mps') or (sys_platform == 'win32' and extra == 'extra-4-idit-cuda' and extra == 'extra-4-idit-mps') or (extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-cuda') or (extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-mps')" },
-]
-wheels = [
-    { url = "https://download-r2.pytorch.org/whl/cpu/torchvision-0.26.0%2Bcpu-cp313-cp313-manylinux_2_28_aarch64.whl", hash = "sha256:2e932af123a39137815dfd152c64cc683fa7cbd327c965e807c9728c7aa4971a" },
-    { url = "https://download-r2.pytorch.org/whl/cpu/torchvision-0.26.0%2Bcpu-cp313-cp313-manylinux_2_28_x86_64.whl", hash = "sha256:16c4f11eda096dc377e82238c8ebb26c7013622c0f1b2c4dcf85fc70f96c0ea7" },
-    { url = "https://download-r2.pytorch.org/whl/cpu/torchvision-0.26.0%2Bcpu-cp313-cp313-win_amd64.whl", hash = "sha256:34ac55a1f614baca2e0f5cef20ddb36184ee3503423871260e1ddd72caf9cb5f" },
-    { url = "https://download-r2.pytorch.org/whl/cpu/torchvision-0.26.0%2Bcpu-cp313-cp313t-manylinux_2_28_aarch64.whl", hash = "sha256:3d30ce3444698807d4b18b199645cd7a95e0b16a4cd0909b8aab47c562a7673a" },
-    { url = "https://download-r2.pytorch.org/whl/cpu/torchvision-0.26.0%2Bcpu-cp313-cp313t-manylinux_2_28_x86_64.whl", hash = "sha256:870a97101168d4da68039d3d51f0c781047065e82dc4c19b2eb0ddff08486180" },
-    { url = "https://download-r2.pytorch.org/whl/cpu/torchvision-0.26.0%2Bcpu-cp313-cp313t-win_amd64.whl", hash = "sha256:050aaf28cff9c2981ec72dc3f9b4ef77bcf9c9c99330ce426cb06c5bb9e6e726" },
-    { url = "https://download-r2.pytorch.org/whl/cpu/torchvision-0.26.0%2Bcpu-cp314-cp314-manylinux_2_28_aarch64.whl", hash = "sha256:78576c8d5a8665de6caaa6e7c3a3fb7caa5dc112032ba60e129a9e78a446a03b" },
-    { url = "https://download-r2.pytorch.org/whl/cpu/torchvision-0.26.0%2Bcpu-cp314-cp314-manylinux_2_28_x86_64.whl", hash = "sha256:78e88d0a57bfadcd17042aa92fe4dd1059e48fcaa2e54a10ac7f438c2eca10d5" },
-    { url = "https://download-r2.pytorch.org/whl/cpu/torchvision-0.26.0%2Bcpu-cp314-cp314-win_amd64.whl", hash = "sha256:93144d0997c51b27996c8305df4d9104efb0d38c9a9b6b05c8bc20ebdf7193b5" },
-    { url = "https://download-r2.pytorch.org/whl/cpu/torchvision-0.26.0%2Bcpu-cp314-cp314t-manylinux_2_28_aarch64.whl", hash = "sha256:93a11b159613ad920b1d42c4eb4e585f48e5dff895f3e08f517ef482fe84e130" },
-    { url = "https://download-r2.pytorch.org/whl/cpu/torchvision-0.26.0%2Bcpu-cp314-cp314t-manylinux_2_28_x86_64.whl", hash = "sha256:99f86ec0a83b9e4b5428a452bf667f99a9ae27d4c32bd4b2081fe917303e7710" },
-    { url = "https://download-r2.pytorch.org/whl/cpu/torchvision-0.26.0%2Bcpu-cp314-cp314t-win_amd64.whl", hash = "sha256:6139108231a29ffb607931360ee24594553a939467c65530f734a2ed9918f011" },
-]
-
-[[package]]
-name = "torchvision"
 version = "0.26.0+cu128"
 source = { registry = "https://download.pytorch.org/whl/cu128" }
 resolution-markers = [
     "python_full_version >= '3.14' and sys_platform == 'win32'",
     "python_full_version >= '3.14' and sys_platform == 'emscripten'",
     "python_full_version >= '3.14' and sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'win32'",
-    "python_full_version >= '3.14' and sys_platform == 'darwin'",
     "python_full_version < '3.14' and sys_platform == 'win32'",
     "python_full_version < '3.14' and sys_platform == 'emscripten'",
     "python_full_version < '3.14' and sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'win32'",
-    "python_full_version < '3.14' and sys_platform == 'darwin'",
 ]
 dependencies = [
-    { name = "numpy", marker = "extra == 'extra-4-idit-cuda' or (extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-mps')" },
-    { name = "pillow", marker = "extra == 'extra-4-idit-cuda' or (extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-mps')" },
-    { name = "torch", version = "2.11.0+cu128", source = { registry = "https://download.pytorch.org/whl/cu128" }, marker = "extra == 'extra-4-idit-cuda' or (extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-mps')" },
+    { name = "numpy", marker = "(sys_platform != 'darwin' and extra == 'extra-4-idit-cuda') or (extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-cuda') or (extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-mps') or (extra == 'extra-4-idit-cuda' and extra == 'extra-4-idit-mps')" },
+    { name = "pillow", marker = "(sys_platform != 'darwin' and extra == 'extra-4-idit-cuda') or (extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-cuda') or (extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-mps') or (extra == 'extra-4-idit-cuda' and extra == 'extra-4-idit-mps')" },
+    { name = "torch", version = "2.11.0+cu128", source = { registry = "https://download.pytorch.org/whl/cu128" }, marker = "(sys_platform != 'darwin' and extra == 'extra-4-idit-cuda') or (extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-cuda') or (extra == 'extra-4-idit-cpu' and extra == 'extra-4-idit-mps') or (extra == 'extra-4-idit-cuda' and extra == 'extra-4-idit-mps')" },
 ]
 wheels = [
     { url = "https://download-r2.pytorch.org/whl/cu128/torchvision-0.26.0%2Bcu128-cp313-cp313-manylinux_2_28_aarch64.whl" },

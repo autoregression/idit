@@ -46,9 +46,6 @@ class IDiTSampler(typing.NamedTuple):
             prediction = model.predict(noisy, time=time)
 
             if model.config.jit_type:
-                print(f"time : {time.shape}")
-                print(f"prediction: {prediction.shape}")
-                print(f"noisy: {noisy.shape}")
                 prediction = (prediction - noisy) / (1 - time.view(-1, 1, 1, 1)).clamp_min(model.config.t_eps)
                 noisy = noisy + prediction / self.config.steps  # https://arxiv.org/abs/2511.13720
             else:

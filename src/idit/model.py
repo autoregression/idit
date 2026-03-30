@@ -17,6 +17,8 @@ class IDiTConfig(pyd.BaseModel):
     layers: int
     iterations: int
     patch_size: int
+    t_eps: float = 5e-2
+    jit_type: bool = False
 
 
 class ConditionEmbedding(torch.nn.Module):  # https://arxiv.org/abs/2006.10739
@@ -168,11 +170,23 @@ class IDiT(torch.nn.Module):
         return x
 
     def forward(self, data: torch.Tensor) -> torch.Tensor:
+        """Forward pass of IDiT, either JiT clean prediction or"""
         time = torch.randn(data.size(0), 1, 1, 1, device=data.device, dtype=data.dtype).sigmoid()
         noise = torch.randn_like(data)
-        noisy = (1 - time) * data + time * noise
-        prediction = self.predict(noisy, time=time.view(-1))
-        loss = torch.nn.functional.mse_loss(prediction.float(), (noise - data).float())
+        if self.config.jit_type:
+            noisy = time * data + (1 - time) * noise
+            velocity = (data - noisy) / (1 - time).clamp_min(self.config.t_eps)
+
+            x_pred = self.predict(noisy, time=time.view(-1))
+            v_pred = (x_pred - noisy) / (1 - time).clamp_min(self.config.t_eps)
+
+            loss = (velocity - v_pred) ** 2
+            loss = loss.mean(dim=(1, 2, 3)).mean()
+
+        else:
+            noisy = (1 - time) * data + time * noise
+            prediction = self.predict(noisy, time=time.view(-1))
+            loss = torch.nn.functional.mse_loss(prediction.float(), (noise - data).float())
 
         return loss
 

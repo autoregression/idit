@@ -47,9 +47,21 @@ class IDiTSampler(typing.NamedTuple):
         )
 
         for step in tqdm.trange(self.config.steps, colour="blue", desc="Sampling"):
-            time = torch.full((noisy.size(0),), 1 - step / self.config.steps, device=noisy.device, dtype=noisy.dtype)
+            if model.config.jit_type:
+                time = torch.full((noisy.size(0),), step / self.config.steps, device=noisy.device, dtype=noisy.dtype)
+            else:
+                time = torch.full((noisy.size(0),), 1 - step / self.config.steps, device=noisy.device, dtype=noisy.dtype)
+
             prediction = model.predict(noisy, time=time)
-            noisy = noisy - prediction / self.config.steps  # https://arxiv.org/abs/2209.03003
+
+            if model.config.jit_type:
+                print(f"time : {time.shape}")
+                print(f"prediction: {prediction.shape}")
+                print(f"noisy: {noisy.shape}")
+                prediction = (prediction - noisy) / (1 - time.view(-1, 1, 1, 1)).clamp_min(model.config.t_eps)
+                noisy = noisy + prediction / self.config.steps  # https://arxiv.org/abs/2511.13720
+            else:
+                noisy = noisy - prediction / self.config.steps  # https://arxiv.org/abs/2209.03003
 
         os.makedirs(self.config.samples_path, exist_ok=True)
 

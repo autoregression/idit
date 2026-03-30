@@ -7,8 +7,7 @@ import torchvision
 import tqdm
 
 from src.idit.model import IDiT, IDiTConfig
-from src.idit.shared import acc_device as device
-from src.idit.shared import dtype, new_timestamp_path
+from src.idit.shared import dtype, acc_device as device
 
 
 class IDiTTrainerConfig(pyds.BaseSettings):
@@ -118,4 +117,4 @@ class IDiTTrainer(typing.NamedTuple):
             optimizer.step()
             scheduler.step()
 
-        model.save_checkpoint(new_timestamp_path(self.config.checkpoint_path))
+        model.save_checkpoint(self.config.checkpoint_path)

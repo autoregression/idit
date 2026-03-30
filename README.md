@@ -51,7 +51,7 @@ batch_size=16 iterations=16 uv run train.py
 | `frequency_dimension`   | The dimension of frequency embeddings.                             | `256`     |
 | `layers`                | The number of layers.                                              | `2`       |
 | `iterations`            | The number of iterations.                                          | `4`       |
-| `steps`                 | The number of training steps.                                      | `10000`   |
+| `steps`                 | The number of training steps.                                      | `20000`   |
 | `batch_size`            | The training batch size.                                           | `4`       |
 | `gradient_accumulation` | The number of gradient accumulation steps.                         | `1`       |
 | `learning_rate`         | The learning rate.                                                 | `1e-3`    |

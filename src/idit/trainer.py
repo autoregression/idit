@@ -6,8 +6,9 @@ import torch
 import torchvision
 import tqdm
 
-from src.idit.shared import dtype, new_timestamp_path, acc_device as device
 from src.idit.model import IDiT, IDiTConfig
+from src.idit.shared import acc_device as device
+from src.idit.shared import dtype, new_timestamp_path
 
 
 class IDiTTrainerConfig(pyds.BaseSettings):
@@ -34,7 +35,7 @@ class IDiTTrainerConfig(pyds.BaseSettings):
     # Optimizer.
 
     steps: int = 20_000
-    batch_size: int = 4 if device.type != "mps" else 1
+    batch_size: int = 4
     gradient_accumulation: int = 1
     learning_rate: float = 1e-3
     warmup: int = 100

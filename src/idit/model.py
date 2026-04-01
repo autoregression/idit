@@ -1,6 +1,3 @@
-from idit.shared import list_timestamp_paths
-from idit.shared import ROOT_FOLDER
-from idit.shared import TIMESTAMP_PATTERN
 import math
 import pathlib
 import typing
@@ -10,7 +7,7 @@ import pydantic as pyd
 import safetensors.torch
 import torch
 
-from idit.shared import new_timestamp_path
+from idit.shared import ROOT_FOLDER, TIMESTAMP_PATTERN, list_timestamp_paths, new_timestamp_path
 
 
 class IDiTConfig(pyd.BaseModel):
@@ -23,7 +20,7 @@ class IDiTConfig(pyd.BaseModel):
     iterations: int
     patch_size: int
     t_eps: float = 5e-2
-    jit_type: bool = False
+    jit_type: bool = True
 
 
 class ConditionEmbedding(torch.nn.Module):  # https://arxiv.org/abs/2006.10739
@@ -110,6 +107,26 @@ class MLP(torch.nn.Module):  # https://arxiv.org/abs/2212.09748
         return x
 
 
+class MixFFN(torch.nn.Module):
+    def __init__(self, hidden_dimension: int, condition_dimension: int) -> None:
+        super().__init__()
+        middle_dimension = hidden_dimension * 4
+
+        self.linear_1 = torch.nn.Linear(hidden_dimension, middle_dimension)
+        self.linear_2 = torch.nn.Linear(middle_dimension, hidden_dimension)
+        self.conv = torch.nn.Conv2d(middle_dimension, middle_dimension, kernel_size=7, padding=(7 - 1) // 2, groups=middle_dimension)
+        self.ada_norm = AdaRMSNorm(hidden_dimension, condition_dimension)
+
+    def forward(self, x: torch.Tensor, condition: torch.Tensor, height: int, width: int) -> torch.Tensor:
+        batch_size = x.size(0)
+        x = self.ada_norm(x, condition)
+        x = torch.nn.functional.silu(self.linear_1(x))
+        x = self.conv(x.transpose(1, 2).reshape(batch_size, -1, height, width))
+        x = x.reshape(batch_size, -1, height * width).transpose(1, 2)
+
+        return self.linear_2(x)
+
+
 class Attention(torch.nn.Module):  # https://arxiv.org/abs/2212.09748
     def __init__(self, hidden_dimension: int, head_dimension: int, condition_dimension: int) -> None:
         super().__init__()
@@ -120,11 +137,10 @@ class Attention(torch.nn.Module):  # https://arxiv.org/abs/2212.09748
         self.ada_norm = AdaRMSNorm(hidden_dimension, condition_dimension)
         self.qk_norm = torch.nn.RMSNorm(head_dimension)  # https://arxiv.org/abs/2010.04245
 
-    def forward(self, x: torch.Tensor, condition: torch.Tensor, rope: torch.Tensor) -> torch.Tensor:
+    def forward(self, x: torch.Tensor, condition: torch.Tensor) -> torch.Tensor:
         x = self.ada_norm(x, condition)
         q, k, v = einops.rearrange(self.linear_1(x), "b l (n h d) -> n b h l d", n=3, d=self.head_dimension)
-        q = apply_rope(self.qk_norm(q), rope)
-        k = apply_rope(self.qk_norm(k), rope)
+        q, k = self.qk_norm(q), self.qk_norm(k)
         x = torch.nn.functional.scaled_dot_product_attention(q, k, v)
         x = self.linear_2(einops.rearrange(x, "b h l d -> b l (h d)"))
 
@@ -136,13 +152,13 @@ class IDiTBlock(torch.nn.Module):
         super().__init__()
 
         self.attention = Attention(config.hidden_dimension, config.head_dimension, config.condition_dimension)
-        self.mlp = MLP(config.hidden_dimension, config.condition_dimension)
+        self.mix_ffn = MixFFN(config.hidden_dimension, config.condition_dimension)
         self.norm_1 = PostRMSNorm(config.hidden_dimension)
         self.norm_2 = PostRMSNorm(config.hidden_dimension)
 
-    def forward(self, x: torch.Tensor, condition: torch.Tensor, rope: torch.Tensor, layers: int) -> torch.Tensor:
-        x = self.norm_1(x, self.attention(x, condition, rope), layers)
-        x = self.norm_2(x, self.mlp(x, condition), layers)
+    def forward(self, x: torch.Tensor, condition: torch.Tensor, height: int, width: int, layers: int) -> torch.Tensor:
+        x = self.norm_1(x, self.attention(x, condition), layers)
+        x = self.norm_2(x, self.mix_ffn(x, condition, height, width), layers)
 
         return x
 
@@ -161,14 +177,13 @@ class IDiT(torch.nn.Module):
     def predict(self, x: torch.Tensor, *, time: torch.Tensor) -> torch.Tensor:
         time_condition = self.time_embedding(time)
         x, height, width = self.patch_embedding(x)
-        rope = create_rope_2d(self.config.head_dimension, height, width).to(x.device, x.dtype)
 
         for iteration in range(self.config.iterations):
             iteration_condition = self.iteration_embedding(torch.full((x.size(0),), iteration / self.config.iterations, device=x.device, dtype=x.dtype))
             condition = time_condition + iteration_condition
 
             for block in self.blocks:
-                x = block(x, condition, rope, layers=self.config.layers * self.config.iterations)
+                x = block(x, condition, height=height, width=width, layers=self.config.layers * self.config.iterations)
 
         x = self.patch_unembedding(x, height, width)
 
@@ -223,26 +238,26 @@ class IDiT(torch.nn.Module):
 # Functions.
 
 
-def create_rope_1d(head_dimension: int, sequence_length: int) -> torch.Tensor:  # https://arxiv.org/abs/2104.09864
-    frequency = torch.linspace(math.log(1.0), math.log(sequence_length / 4), steps=head_dimension // 2).exp()
-    x = torch.linspace(-math.pi / 2, math.pi / 2, sequence_length)
-    x = x.unsqueeze(-1) * frequency
-    x = torch.stack([x.cos(), x.sin()]).repeat_interleave(2, dim=-1)
+# def create_rope_1d(head_dimension: int, sequence_length: int) -> torch.Tensor:  # https://arxiv.org/abs/2104.09864
+#     frequency = torch.linspace(math.log(1.0), math.log(sequence_length / 4), steps=head_dimension // 2).exp()
+#     x = torch.linspace(-math.pi / 2, math.pi / 2, sequence_length)
+#     x = x.unsqueeze(-1) * frequency
+#     x = torch.stack([x.cos(), x.sin()]).repeat_interleave(2, dim=-1)
 
-    return x
-
-
-def create_rope_2d(head_dimension: int, height: int, width: int) -> torch.Tensor:  # https://arxiv.org/abs/2401.11605
-    rope_height = create_rope_1d(head_dimension // 2, height).unsqueeze(2).repeat_interleave(width, dim=2)
-    rope_width = create_rope_1d(head_dimension // 2, width).unsqueeze(1).repeat_interleave(height, dim=1)
-
-    return torch.cat([rope_height, rope_width], dim=-1).view(2, -1, head_dimension)
+#     return x
 
 
-def apply_rope(x: torch.Tensor, rope: torch.Tensor) -> torch.Tensor:
-    y = torch.stack([-x[..., 1::2], x[..., ::2]], dim=-1).flatten(-2)
+# def create_rope_2d(head_dimension: int, height: int, width: int) -> torch.Tensor:  # https://arxiv.org/abs/2401.11605
+#     rope_height = create_rope_1d(head_dimension // 2, height).unsqueeze(2).repeat_interleave(width, dim=2)
+#     rope_width = create_rope_1d(head_dimension // 2, width).unsqueeze(1).repeat_interleave(height, dim=1)
 
-    return x * rope[0] + y * rope[1]
+#     return torch.cat([rope_height, rope_width], dim=-1).view(2, -1, head_dimension)
+
+
+# def apply_rope(x: torch.Tensor, rope: torch.Tensor) -> torch.Tensor:
+#     y = torch.stack([-x[..., 1::2], x[..., ::2]], dim=-1).flatten(-2)
+
+#     return x * rope[0] + y * rope[1]
 
 
 T = typing.TypeVar("T", bound=torch.nn.Module)

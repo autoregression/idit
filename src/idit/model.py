@@ -1,6 +1,3 @@
-from idit.shared import list_timestamp_paths
-from idit.shared import ROOT_FOLDER
-from idit.shared import TIMESTAMP_PATTERN
 import math
 import pathlib
 import typing
@@ -10,7 +7,7 @@ import pydantic as pyd
 import safetensors.torch
 import torch
 
-from idit.shared import new_timestamp_path
+from idit.shared import ROOT_FOLDER, TIMESTAMP_PATTERN, list_timestamp_paths, new_timestamp_path
 
 
 class IDiTConfig(pyd.BaseModel):
@@ -23,7 +20,7 @@ class IDiTConfig(pyd.BaseModel):
     iterations: int
     patch_size: int
     t_eps: float = 5e-2
-    jit_type: bool = False
+    jit_type: bool = True
 
 
 class ConditionEmbedding(torch.nn.Module):  # https://arxiv.org/abs/2006.10739

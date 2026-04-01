@@ -7,7 +7,8 @@ import torchvision
 import tqdm
 
 from src.idit.model import IDiT, IDiTConfig
-from src.idit.shared import dtype, acc_device as device
+from src.idit.shared import acc_device as device
+from src.idit.shared import dtype
 
 
 class IDiTTrainerConfig(pyds.BaseSettings):
@@ -15,25 +16,25 @@ class IDiTTrainerConfig(pyds.BaseSettings):
 
     # Data.
 
-    dataset_path: str = "mnist"
+    dataset_path: str = "bitmind/ffhq-256"
     split: str = "train"
     column: str = "image"
-    resolution: int = 28
+    resolution: int = 256
 
     # Model.
 
-    input_dimension: int = 1
+    input_dimension: int = 3
     hidden_dimension: int = 64
     head_dimension: int = 16
     condition_dimension: int = 64
     frequency_dimension: int = 256
     layers: int = 1
     iterations: int = 8
-    patch_size: int = 2
+    patch_size: int = 16
 
     # Optimizer.
 
-    steps: int = 20_000
+    steps: int = 100_000
     batch_size: int = 4
     gradient_accumulation: int = 1
     learning_rate: float = 1e-3

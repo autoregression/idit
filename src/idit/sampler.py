@@ -6,12 +6,13 @@ import torch
 import tqdm
 
 from src.idit.model import IDiT
-from src.idit.shared import dtype, acc_device as device, load_timestamp_path, save_image_stack
+from src.idit.shared import acc_device as device
+from src.idit.shared import dtype, load_timestamp_path, save_image_stack
 
 
 class IDiTSamplerConfig(pyds.BaseSettings):
     seed: int = 0
-    resolution: int = 28
+    resolution: int = 256
     steps: int = 20
     batch_size: int = 16
     samples_path: str = "samples"

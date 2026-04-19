@@ -1,22 +1,12 @@
 import os
 import typing
 
-import pydantic_settings as pyds
 import torch
 import tqdm
 
-from src.idit.model import IDiT
-from src.idit.shared import acc_device as device
-from src.idit.shared import dtype, load_timestamp_path, save_image_stack
-
-
-class IDiTSamplerConfig(pyds.BaseSettings):
-    seed: int = 0
-    resolution: int = 256
-    steps: int = 20
-    batch_size: int = 16
-    samples_path: str = "samples"
-    checkpoint_path: str = "checkpoint"
+from idit.config import IDiTSamplerConfig
+from idit.model import IDiT
+from idit.shared import acc_device as device, dtype, load_timestamp_path, save_image_stack
 
 
 class IDiTSampler(typing.NamedTuple):

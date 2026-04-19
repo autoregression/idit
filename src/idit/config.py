@@ -85,8 +85,8 @@ class IDiTConfig(pyd.BaseModel):
 class IDiTSamplerConfig(pyd.BaseModel):
     seed: int
     resolution: int
-    steps: int
-    batch_size: int
+    inference_steps: int
+    inference_batch_size: int
     samples_path: str
     checkpoint_path: str
 
@@ -95,8 +95,8 @@ class IDiTSamplerConfig(pyd.BaseModel):
         return cls(
             seed=presets.seed,
             resolution=presets.resolution,
-            steps=presets.inference_steps,
-            batch_size=presets.inference_batch_size,
+            inference_steps=presets.inference_steps,
+            inference_batch_size=presets.inference_batch_size,
             samples_path=presets.samples_path,
             checkpoint_path=presets.checkpoint_path,
         )

@@ -1,9 +1,9 @@
 import re
 from datetime import datetime
 from pathlib import Path
-
 import torch
 import torchvision
+
 
 acc_device = torch.accelerator.current_accelerator()
 dtype = torch.float32

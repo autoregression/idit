@@ -1,48 +1,13 @@
 import typing
 
 import datasets
-import pydantic_settings as pyds
 import torch
 import torchvision
 import tqdm
 
-from src.idit.model import IDiT, IDiTConfig
-from src.idit.shared import dtype, acc_device as device
-
-
-class IDiTTrainerConfig(pyds.BaseSettings):
-    seed: int = 0
-
-    # Data.
-
-    dataset_path: str = "mnist"
-    split: str = "train"
-    column: str = "image"
-    resolution: int = 28
-
-    # Model.
-
-    input_dimension: int = 1
-    hidden_dimension: int = 64
-    head_dimension: int = 16
-    condition_dimension: int = 64
-    frequency_dimension: int = 256
-    layers: int = 1
-    iterations: int = 8
-    patch_size: int = 2
-
-    # Optimizer.
-
-    steps: int = 20_000
-    batch_size: int = 4
-    gradient_accumulation: int = 1
-    learning_rate: float = 1e-3
-    warmup: int = 100
-    cooldown: int = 500
-
-    # Checkpointer.
-
-    checkpoint_path: str = "checkpoint"
+from idit.config import IDiTTrainerConfig
+from idit.model import IDiT, IDiTConfig
+from idit.shared import acc_device as device, dtype
 
 
 class IDiTTrainer(typing.NamedTuple):

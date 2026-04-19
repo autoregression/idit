@@ -1,4 +1,7 @@
-from src.idit.sampler import IDiTSampler, IDiTSamplerConfig
+from idit.config import IDiTPresets, IDiTSamplerConfig
+from idit.sampler import IDiTSampler
 
-sampler = IDiTSampler(config=IDiTSamplerConfig())
+presets = IDiTPresets()
+merged = presets.with_dataset()
+sampler = IDiTSampler(config=IDiTSamplerConfig.from_presets(merged))
 samples = sampler.sample()

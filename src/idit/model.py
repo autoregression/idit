@@ -3,24 +3,11 @@ import pathlib
 import typing
 
 import einops
-import pydantic as pyd
 import safetensors.torch
 import torch
 
+from idit.config import IDiTConfig
 from idit.shared import ROOT_FOLDER, TIMESTAMP_PATTERN, list_timestamp_paths, new_timestamp_path
-
-
-class IDiTConfig(pyd.BaseModel):
-    input_dimension: int
-    hidden_dimension: int
-    head_dimension: int
-    condition_dimension: int
-    frequency_dimension: int
-    layers: int
-    iterations: int
-    patch_size: int
-    t_eps: float = 5e-2
-    jit_type: bool = True
 
 
 class ConditionEmbedding(torch.nn.Module):  # https://arxiv.org/abs/2006.10739
